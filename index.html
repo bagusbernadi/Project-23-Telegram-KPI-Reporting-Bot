@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Project 23: Telegram Bot Automated KPI Reporting</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Rancangan project portofolio Data Analyst: bot Telegram yang mengirim ringkasan KPI harian dan alert otomatis dari data produksi perakitan sepeda motor.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700;800&display=swap">
+<style>
+/* Layout: tema terang ala Google (single theme, sengaja): latar putih keabuan, kartu putih;
+   biru = struktur, kuning = penanda utama, hijau = info pendukung, merah = aksen.
+   Skala huruf: H1 32 · H2 25 · H3 19 · body 16.5 · keterangan 14 · label 12.5 */
+:root{color-scheme:light;
+--bg:#F8F9FA;--card:#FFFFFF;--sub:#F1F3F4;--line:#DADCE0;
+--ink:#202124;--head:#174EA6;--mut:#5F6368;
+--navy:#1A73E8;--navy-ink:#FFFFFF;--teal:#188038;--amber:#FBBC04;--amber-ink:#3C2A00;--bar:#1A73E8;--soft:#E8F0FE;
+--gb:#4285F4;--gr:#EA4335;--gy:#FBBC04;--gg:#34A853;
+--navyH:#1A73E8;--amberH:#B06000;--tealH:#188038;--plumH:#9334E6;--roseH:#D93025;--skyH:#1967D2;--onph:#fff;
+--f:"Source Sans 3",Calibri,Carlito,"Segoe UI",Arial,sans-serif;
+--h1:clamp(26px,2.6vw,32px);--h2:clamp(21px,2vw,25px);--h3:19px;--body:16.5px;--small:14px;--label:12.5px}
+[hidden]{display:none!important}
+*{box-sizing:border-box}html{scroll-padding-top:64px;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 var(--body)/1.6 var(--f)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
+main{max-width:880px;margin:0 auto;padding-block:16px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+b,strong{font-weight:700}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--bg);padding:8px 0;display:flex;gap:6px;overflow-x:auto}
+nav a{flex:none;background:var(--card);border:1px solid var(--line);color:var(--ink);text-decoration:none;border-radius:999px;padding:6px 14px;font-size:var(--small);font-weight:600}
+nav a:hover,nav a:focus-visible{background:var(--amber);border-color:var(--amber);color:var(--amber-ink);outline:none}
+.banner{background:var(--navy);color:var(--navy-ink);border-radius:18px;padding:22px 26px}
+.banner h1{margin:0 0 8px;font-size:var(--h1);font-weight:800;line-height:1.2;text-wrap:balance;letter-spacing:-.01em}.banner p{margin:0;font-size:18px;line-height:1.55;opacity:.97}.banner .goal b{font-weight:800}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
+.tags{align-items:center}.tlab{font-size:var(--small);font-weight:700;margin-right:4px;opacity:.95}
+.tag{border-radius:999px;padding:3px 12px;font-size:var(--label);font-weight:700;background:rgba(255,255,255,.2);letter-spacing:.02em}.tag.a{background:var(--amber);color:var(--amber-ink)}
+.card{border-radius:16px;padding:16px 20px;background:var(--card);border:1px solid var(--line);margin:12px 0}
+.card p{margin:8px 0}
+h2{font-size:var(--h2);font-weight:800;color:var(--head);margin:48px 0 10px;padding-bottom:8px;border-bottom:2px solid var(--line);line-height:1.25;text-wrap:balance}
+h2 small{display:block;font-size:var(--small);font-weight:400;color:var(--mut);margin-top:4px}
+h3{font-size:var(--h3);font-weight:700;color:var(--head);margin:16px 0 6px;line-height:1.3}
+.card h3:first-child,.card>div>h3:first-child{margin-top:4px}
+.add{display:inline-block;vertical-align:middle;margin-left:8px;border-radius:999px;padding:2px 10px;font-size:var(--label);font-weight:700;background:var(--teal);color:#fff}
+.how{background:var(--soft);border-radius:12px;padding:12px 16px;margin:10px 0;font-size:var(--small);line-height:1.55;color:var(--ink)}.how::before{content:"Cara membaca ";font-weight:700;color:var(--teal)}
+.callout{border-radius:14px;padding:14px 20px;margin:12px 0;font-size:16px}.callout h4{margin:0 0 6px;font-size:var(--h3);font-weight:700}.callout p{margin:6px 0}
+.callout.a{background:var(--amber);color:var(--amber-ink)}.callout.g{background:var(--teal);color:#fff}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0}.kpis .card{margin:0}
+.kpi .v{font-size:30px;font-weight:800;display:block;line-height:1.15;color:var(--head);font-variant-numeric:tabular-nums}.kpi .l{display:block;font-weight:700;font-size:16px;margin-top:2px}.kpi .d{display:block;font-size:var(--small);line-height:1.4;margin-top:6px;color:var(--mut)}
+.kpi.t{background:var(--teal);border-color:var(--teal);color:#fff}.kpi.am{background:var(--amber);border-color:var(--amber);color:var(--amber-ink)}
+.kpi.t .v,.kpi.t .d,.kpi.am .v,.kpi.am .d{color:inherit}
+table{border-collapse:collapse;width:100%;font-size:15px;background:var(--card);border-radius:12px;overflow:hidden}
+th{background:var(--navy);color:var(--navy-ink);padding:9px 12px;text-align:left;vertical-align:top;font-weight:700}
+td{padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:nth-child(odd) td{background:var(--sub)}
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:10px 0}
+.q{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:6px 0;display:grid;grid-template-columns:40px 1fr;gap:4px 8px;font-size:16px;line-height:1.45}
+.q .id{font-weight:800;color:var(--head)}.q .m{grid-column:2;font-size:var(--small);color:var(--mut)}
+.pri{display:inline-block;border-radius:999px;padding:1px 9px;font-size:var(--label);font-weight:700;margin-left:6px;background:var(--sub);border:1px solid var(--line);color:var(--mut)}.pri.M{background:var(--amber);border-color:var(--amber);color:var(--amber-ink)}.pri.S{background:var(--navy);border-color:var(--navy);color:#fff}
+.theme{font-size:var(--label);font-weight:700;color:var(--teal);margin:20px 0 4px;text-transform:uppercase;letter-spacing:.08em}
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:8px 0}
+.flow span{border-radius:999px;padding:5px 12px;font-size:var(--small);font-weight:700;background:var(--sub);border:1px solid var(--line)}
+.flow span.ng{background:var(--amber);border-color:var(--amber);color:var(--amber-ink)}.flow span.ok{background:var(--teal);border-color:var(--teal);color:#fff}.flow i{font-style:normal;color:var(--mut);font-size:var(--small)}
+.row{display:flex;align-items:center;gap:8px;margin:6px 0;width:100%;font:inherit;font-size:var(--small);color:var(--ink);background:none;border:0;padding:0;cursor:pointer;text-align:left}
+.row .n{width:96px;flex:none;font-weight:600}.row .tr{flex:1;background:var(--sub);border-radius:8px;height:24px;position:relative;overflow:hidden}
+.row .b{position:absolute;left:0;top:0;bottom:0;border-radius:8px;background:var(--bar);transition:width .25s}
+.row.sel .b{background:var(--amber)}.row.sel .n{color:var(--head);font-weight:800}
+.row .c{width:58px;text-align:right;flex:none;font-variant-numeric:tabular-nums;font-weight:600}
+.row:focus-visible{outline:3px solid var(--amber);outline-offset:2px;border-radius:8px}
+.ctl{display:flex;align-items:center;gap:12px;margin:14px 0 10px;font-weight:700;font-size:15px}.ctl input{flex:1;accent-color:#F2A541}.ctl output{min-width:48px;text-align:right}
+.res{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}.res div{background:var(--sub);border-radius:12px;padding:10px 14px;font-size:var(--small);color:var(--mut)}.res b{display:block;font-size:24px;font-weight:800;color:var(--head);font-variant-numeric:tabular-nums}
+.steps{counter-reset:s;display:grid;gap:8px;margin:10px 0;padding:0;list-style:none}
+.steps li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px 12px 54px;position:relative}
+.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:14px;top:12px;width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;font-weight:700;display:grid;place-items:center;font-size:14px}
+.steps li.L::before{background:var(--amber);color:var(--amber-ink)}
+.steps b.t{display:block;font-size:17px;color:var(--head);line-height:1.3}.steps p{margin:6px 0;font-size:15px;line-height:1.5}.steps .meta{font-size:13px;color:var(--mut)}
+.phase{font-size:var(--label);font-weight:700;color:var(--teal);margin:18px 0 0;text-transform:uppercase;letter-spacing:.08em}
+.tools{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:12px 0}.tools .card{margin:0}
+.tools b{display:block;font-size:var(--h3);color:var(--head)}.tools .r{font-size:15px;margin:6px 0 0}.tools .alt{font-size:var(--small);color:var(--mut);margin:8px 0 0;padding-top:8px;border-top:1px dashed var(--line)}
+details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:8px 0}summary{cursor:pointer;font-weight:700;font-size:17px;color:var(--head)}details p{font-size:15.5px}
+.pill{border-radius:999px;padding:1px 9px;font-size:var(--label);font-weight:700;background:var(--teal);color:#fff;margin-left:4px}.pill.d{background:var(--sub);border:1px solid var(--line);color:var(--mut)}
+.chip{display:inline-block;border-radius:999px;padding:3px 11px;margin:3px 4px 3px 0;font-size:var(--small);font-weight:600;background:var(--sub);border:1px solid var(--line)}
+.tm{border-bottom:2px dotted var(--amber);background:rgba(242,165,65,.16);border-radius:4px;padding:0 2px;cursor:help}
+#tip{position:fixed;display:none;max-width:320px;white-space:pre-line;background:#202124;color:#fff;padding:10px 12px;border-radius:12px;font-size:var(--small);line-height:1.4;z-index:20;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+ul.tight{margin:6px 0;padding-left:20px}ul.tight li{margin:5px 0}
+.intro>.layout{grid-column:1/-1}
+.layout{margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}.layout .lead{margin:4px 0 10px;max-width:90ch}
+.figw{overflow-x:auto;margin:8px 0}.figw svg{display:block;width:100%;min-width:860px;height:auto;font-family:var(--f)}
+.figw .lane{fill:var(--sub)}.figw .box{fill:var(--card);stroke:var(--line);stroke-width:1.5}.figw .box.hi{stroke:var(--bar);stroke-width:2.5}
+.figw text{fill:var(--ink)}.figw .ln{font-size:15px;font-weight:700;fill:var(--head)}.figw .gl{font-size:13px;font-weight:700;fill:var(--teal);letter-spacing:.03em}
+.figw .bt{font-size:13px}.figw .b{font-size:15px;font-weight:700}.figw .st{font-size:13px;fill:var(--mut)}
+.figw .grp{stroke:var(--teal);stroke-width:2}.figw .ar{stroke:var(--bar);stroke-width:2}.figw .ah{fill:var(--bar)}
+.figw .ng,.figw .ngs{stroke:var(--amber);stroke-width:2;stroke-dasharray:5 4}.figw .aha{fill:var(--amber)}.figw .nl{font-size:14px;font-weight:700;fill:var(--amberH)}
+.figw .dt{stroke:var(--mut);stroke-width:2;stroke-dasharray:2 4}
+.figw .okb{fill:var(--teal)}.figw .scb{fill:var(--amber)}.figw .wt{fill:#fff;font-size:14px;font-weight:700}.figw .at{fill:var(--amber-ink);font-size:14px;font-weight:700}
+.figw .mk{fill:var(--amber)}.figw .mt{fill:var(--amber-ink);font-size:14px;font-weight:800}
+.legend{counter-reset:l;list-style:none;padding:0;margin:10px 0 0;display:grid;gap:10px}
+.legend li{counter-increment:l;position:relative;padding-left:38px;font-size:15.5px;line-height:1.55}
+.legend li::before{content:counter(l);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:50%;background:var(--amber);color:var(--amber-ink);font-weight:800;font-size:14px;display:grid;place-items:center}
+@media (min-width:1000px){.legend{grid-template-columns:repeat(4,1fr);gap:16px}}
+.kpi{--h:var(--navyH);background:color-mix(in srgb,var(--h) 11%,var(--card));border-color:color-mix(in srgb,var(--h) 35%,var(--card))}
+.kpi .v{color:var(--h)}.kpi .l{color:var(--ink)}.kpi .d{color:var(--mut)}
+.q[data-p="M"]{background:color-mix(in srgb,var(--amber) 13%,var(--card));border-color:color-mix(in srgb,var(--amber) 60%,var(--card))}
+.q[data-p="S"]{background:color-mix(in srgb,var(--skyH) 9%,var(--card));border-color:color-mix(in srgb,var(--skyH) 35%,var(--card))}
+.q[data-p="N"]{border-style:dashed}
+.q[data-p="M"] .id{color:var(--amberH)}.q[data-p="S"] .id{color:var(--skyH)}.q[data-p="N"] .id{color:var(--mut)}
+.pri.S{background:var(--skyH);border-color:var(--skyH);color:var(--onph)}
+.fbar{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:12px 0 4px}.fbar span{font-size:var(--small);font-weight:700;color:var(--mut);margin-right:2px}
+.fb{font:inherit;font-size:var(--small);font-weight:700;cursor:pointer;border-radius:999px;padding:6px 14px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+.fb i{font-style:normal;opacity:.7;margin-left:4px}.fb:hover{border-color:var(--bar)}.fb:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.fb.on{background:var(--navy);border-color:var(--navy);color:#fff}.fb.on[data-f="M"]{background:var(--amber);border-color:var(--amber);color:var(--amber-ink)}.fb.on[data-f="S"]{background:var(--skyH);border-color:var(--skyH);color:var(--onph)}
+.defs p{margin:0 0 12px}.defs p:last-child{margin:0}
+.fx{display:inline-block;margin:2px 0;padding:1px 9px;border-radius:8px;background:color-mix(in srgb,var(--tealH) 12%,var(--card));border:1px solid color-mix(in srgb,var(--tealH) 40%,var(--card));color:var(--tealH);font-weight:700;font-size:15px;white-space:normal}
+.figw.fl svg{min-width:520px;max-width:1000px;margin:0 auto}.flowfull .card{padding:20px 24px}.flowfull .card>p{text-align:center;margin:12px 0 0}.figw .dia{fill:var(--sub);stroke:var(--bar);stroke-width:2}.figw .b2{font-size:14px;font-weight:700}
+.figw .arT{fill:none;stroke:var(--teal);stroke-width:2}.figw .aht{fill:var(--teal)}.figw .arA{fill:none;stroke:var(--amber);stroke-width:2}.figw .aha2{fill:var(--amber)}
+.figw .lt{font-size:13px;font-weight:700;fill:var(--tealH)}.figw .la{font-size:13px;font-weight:700;fill:var(--amberH)}
+.ph .phase{color:var(--ph);font-size:13.5px}
+.ph .steps li{background:color-mix(in srgb,var(--ph) 8%,var(--card));border-color:color-mix(in srgb,var(--ph) 32%,var(--card))}
+.ph .steps li::before,.ph .steps li.L::before{background:var(--ph);color:var(--onph)}
+.ph .steps b.t{color:var(--ink)}
+.steps li.L::after{content:"beban besar";position:absolute;right:12px;top:12px;font-size:11.5px;font-weight:700;letter-spacing:.03em;padding:1px 8px;border-radius:999px;border:1px solid var(--ph,var(--amber));color:var(--ph,var(--amber))}
+.steps li.L b.t{padding-right:84px}
+.banner{background:linear-gradient(120deg,#1A73E8,#4285F4)}
+h2{border-bottom:3px solid transparent;border-image:linear-gradient(90deg,var(--gb) 0 60px,var(--line) 60px) 1}
+nav a:nth-child(4n+1):hover{background:var(--gb);border-color:var(--gb);color:#fff}nav a:nth-child(4n+2):hover{background:var(--gr);border-color:var(--gr);color:#fff}nav a:nth-child(4n+4):hover{background:var(--gg);border-color:var(--gg);color:#fff}
+.callout.g{background:#E6F4EA;color:#0D652D;border:1px solid #A8DAB5}.callout.g h4{color:#137333}
+.callout.a{background:#FEF7E0;color:#3C2A00;border:1px solid #FDD663}
+.outs{display:grid;gap:12px;margin:12px 0}.outs .card{margin:0}
+.out{--h:var(--navyH);border-top:4px solid var(--h)}
+.out .oh{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}.out .oh b{font-size:var(--h3);color:var(--h);line-height:1.3}
+.ob{flex:none;border-radius:999px;padding:1px 9px;font-size:var(--label);font-weight:700;background:var(--amber);color:var(--amber-ink)}.ob.opt{background:var(--sub);border:1px solid var(--line);color:var(--mut)}
+.out ul{margin:8px 0 0;padding-left:18px;font-size:15px;line-height:1.5}.out li{margin:4px 0}
+.out li:nth-last-child(-n+2){color:var(--mut);font-size:14px}
+@media (min-width:700px){.outs{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:1280px){.outs{grid-template-columns:repeat(4,1fr)}}
+.tag.c1{background:#188038;color:#fff}.tag.c2{background:#9334E6;color:#fff}.tag.c3{background:#D93025;color:#fff}.tag.c4{background:#fff;color:#1A73E8}
+.sample td:first-child{white-space:nowrap}.src{border-top:1px dashed var(--line);padding-top:8px;font-size:15px}.src code{font-size:13.5px;background:var(--soft);padding:1px 6px;border-radius:6px}.note{font-size:13px;color:var(--mut);margin:6px 0 0}
+.wf{display:grid;gap:4px}
+.wl{--c:var(--navyH);position:relative;background:color-mix(in srgb,var(--c) 8%,var(--card));border:1px solid color-mix(in srgb,var(--c) 30%,var(--card));border-radius:14px;padding:10px 12px 12px}
+.wl h4{margin:0 0 10px;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--c)}
+.ws{display:grid;gap:22px}
+.wb{position:relative;background:var(--card);border:2px solid var(--c);border-radius:12px;padding:10px 12px 10px 52px;min-height:62px}
+.wb .n{position:absolute;left:12px;top:12px;width:30px;height:30px;border-radius:50%;background:var(--c);color:var(--onph);font-weight:800;font-size:14px;display:grid;place-items:center}
+.wb b{display:block;font-size:15px;line-height:1.3}.wb .s{display:block;font-size:13px;color:var(--mut);margin-top:2px}
+.wb.L::before{content:"beban besar";position:absolute;top:-10px;right:10px;background:var(--amber);color:var(--amber-ink);font-size:11px;font-weight:700;padding:0 8px;border-radius:999px;line-height:18px}
+.wb:not(:last-child)::after{content:"↓";position:absolute;left:50%;bottom:-21px;transform:translateX(-50%);color:var(--c);font-weight:800;font-size:16px;line-height:1}
+.wa{text-align:center;font-weight:800;font-size:20px;color:var(--mut);line-height:1.2}
+.wrow,.wrow1{display:grid;gap:4px}
+.wrow>.wl:first-child{margin-bottom:24px}.wrow>.wl:first-child::after{content:"↓";position:absolute;left:50%;bottom:-24px;transform:translateX(-50%);font-weight:800;font-size:20px;color:var(--mut)}
+@media (min-width:1200px){
+.wrow{grid-template-columns:2fr 3fr;gap:30px}.wrow>.wl:first-child{margin-bottom:0}.wrow>.wl:first-child::after{content:"→";left:auto;right:-24px;bottom:auto;top:50%;transform:translateY(-50%)}
+.wrow1{grid-template-columns:2fr 3fr}
+.ws{grid-template-columns:repeat(var(--k),1fr);gap:26px}
+.wb:not(:last-child)::after{content:"→";left:auto;right:-25px;bottom:auto;top:50%;transform:translateY(-50%)}
+.wl{padding-left:8px;padding-right:8px}.ws{gap:34px}
+.wrow,.wrow1{gap:16px}.wrow>.wl:first-child::after{right:-14px;font-size:16px}
+}
+.docs code{font-size:13.5px;background:var(--soft);padding:1px 6px;border-radius:6px;white-space:nowrap}.docs td:nth-child(3){white-space:nowrap}
+/* layar lebar: nav jadi sidebar, konten dibagi kolom */
+.two{display:grid;gap:0 24px;align-items:start}.two>*{min-width:0}
+.qgrid{display:grid;gap:0 12px}.qgrid>*{min-width:0}
+@media (min-width:1000px){
+main{max-width:1480px}
+.two,.qgrid{grid-template-columns:1fr 1fr}.qgrid .theme{grid-column:1/-1}
+.kpis{grid-template-columns:repeat(6,1fr)}.tools{grid-template-columns:repeat(3,1fr)}
+.intro{display:grid;grid-template-columns:1fr 1fr;column-gap:28px;align-items:start}.intro h3{grid-column:1/-1}.intro>p{grid-column:1}.intro>.scroll{grid-column:2;grid-row:2/span 3;margin-top:8px}
+.phases{display:grid;grid-template-columns:repeat(2,1fr);gap:0 24px}.phases>*{min-width:0}
+}
+@media (min-width:1280px){
+main{display:grid;grid-template-columns:190px minmax(0,1fr);column-gap:32px}
+main>*{grid-column:2}
+main>nav{grid-column:1;grid-row:1/span 60;align-self:start;flex-direction:column;padding-top:16px}
+main>nav a{border-radius:10px;font-size:15px;padding:8px 14px}
+.phases{grid-template-columns:repeat(4,1fr)}
+}
+@media (max-width:620px){.kpis,.res{grid-template-columns:1fr 1fr}.tools{grid-template-columns:1fr}.row .n{width:78px}.banner{padding:18px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.row .b{transition:none}}
+.row.sim{cursor:default}.row .gh{position:absolute;left:0;top:0;bottom:0;border-radius:8px;background:color-mix(in srgb,var(--mut) 28%,var(--card))}
+.row.sim .n{width:170px}.cxb{margin-top:0}@media (max-width:620px){.row.sim .n{width:110px;font-size:13px}}
+.chart svg{display:block;width:100%;height:auto;font-family:var(--f)}.chart .ax{stroke:var(--line)}.chart .tx{font-size:12px;fill:var(--mut)}
+.chart .ln2{fill:none;stroke:var(--bar);stroke-width:2}.chart .th{stroke:var(--amberH);stroke-width:2;stroke-dasharray:6 4}.chart .hb{fill:var(--bar)}.chart .sp{stroke:var(--roseH);stroke-width:2;stroke-dasharray:4 4}
+.chart .dot{fill:var(--roseH)}.chart .inc{fill:color-mix(in srgb,var(--tealH) 14%,var(--card))}.chart .bl{stroke:var(--amberH);stroke-width:2;stroke-dasharray:6 4}
+.row .gh2{position:absolute;left:0;top:0;bottom:0;border-right:3px solid var(--amberH);background:rgba(255,255,255,.35);border-radius:8px 0 0 8px}
+@media (min-width:1200px){.wa{display:grid;grid-template-columns:repeat(5,1fr);gap:34px;padding:0 9px}.wa.r span{grid-column:5}.wa.l span{grid-column:1}
+.ws.rev{direction:rtl}.ws.rev .wb{direction:ltr}.ws.rev .wb:not(:last-child)::after{content:"←";right:auto;left:-25px}}
+.figw .dt2{fill:none;stroke:var(--mut);stroke-width:2;stroke-dasharray:2 4}
+</style>
+
+</head><body>
+<a href="https://bagusbernadi.github.io/" style="display:inline-block;margin:12px 16px;font:600 14px/1.4 'Source Sans 3',Arial,sans-serif;color:#1A73E8;text-decoration:none">← All projects / Semua project</a>
+<main>
+<nav aria-label="Section navigation"><a href="#s1">Background</a><a href="#s2">Business Questions</a><a href="#s3">Daily Report &amp; Alert Rules</a><a href="#s4">Dataset</a><a href="#s5">Tools</a><a href="#s6">Work Plan</a><a href="#s7">Project Outputs</a><a href="#s8">Success Criteria</a><a href="#s9">Assumptions &amp; Limitations</a></nav>
+<header class="banner"><h1>Project 23: Telegram Bot Automated KPI Reporting</h1>
+<p class="goal"><b>Tujuan project:</b> membangun pipeline yang setiap pagi menghitung KPI produksi (yield, NG rate, rework rate per stasiun) lalu mengirim ringkasan dan grafiknya ke Telegram, serta mengirim alert saat yield turun di bawah ambang, sehingga supervisor tahu kondisi lini tanpa menunggu laporan manual.</p>
+<div class="tags"><span class="tlab">Kategori:</span><span class="tag a">Rancangan project</span><span class="tag c1">Perakitan sepeda motor</span><span class="tag c2">Data simulasi</span><span class="tag c3">Python + bot otomatis</span></div></header>
+<section class="card intro">
+<h3>Project Introduction</h3>
+<p>Bayangkan aplikasi cuaca di HP. Setiap pagi aplikasi mengirim ringkasan: suhu, peluang hujan, dan grafik kecil. Jika ada badai, aplikasi langsung mengirim peringatan. Kita tidak perlu membuka situs cuaca dan membaca tabel panjang setiap hari.</p>
+<p>Banyak pabrik masih bekerja seperti sebelum ada aplikasi cuaca: seseorang mengunduh data, menyusun laporan di Excel, lalu mengirimnya manual ke grup chat. Jika ada masalah di malam hari, kabarnya baru sampai keesokan siang.</p>
+<div class="scroll"><table><tr><th>Di aplikasi cuaca</th><th>Di pabrik sepeda motor</th></tr><tr><td>Stasiun cuaca yang mengukur</td><td>Stasiun produksi yang mencatat output, NG, dan rework</td></tr><tr><td>Ringkasan cuaca pagi</td><td>Ringkasan KPI harian per stasiun beserta grafik</td></tr><tr><td>Peringatan badai</td><td>Alert saat yield di bawah ambang atau NG melonjak</td></tr><tr><td>Bertanya "cuaca besok?"</td><td>Perintah /yield, /top_ng, /trend 7d di Telegram</td></tr><tr><td>Petugas yang menyusun buletin manual</td><td>Engineer yang menyusun laporan di Excel setiap pagi</td></tr></table></div>
+<p>Project ini membangun <b>pipeline laporan otomatis</b>: data produksi dihitung menjadi KPI dengan SQL, dibuat grafiknya, lalu dikirim lewat bot Telegram sesuai jadwal. Fokusnya tetap analisis dan aturan KPI; bot hanya lapisan pengiriman. Datanya adalah data simulasi karena data pabrik bersifat rahasia. Kata bergaris bawah putus-putus kuning bisa diklik untuk melihat artinya.</p>
+<div class="layout">
+<h3>Gambaran alur kerja di lini perakitan sepeda motor</h3>
+<p class="lead">Lini produksi bisa dibayangkan sebagai tiga jalur yang berjalan bersamaan. Dua jalur pertama sudah ada di pabrik. Jalur ketiga adalah yang dibangun di project ini.</p>
+<div class="figw"><svg viewBox="0 0 1240 432" role="img" aria-label="Alur kerja: jalur produksi sepeda motor, jalur laporan manual di Excel yang dikirim ke grup chat, dan jalur otomatis dari database ke perhitungan KPI dan bot Telegram"><defs><marker id="mN" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah" d="M0 0L10 5L0 10z"/></marker><marker id="mA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="aha" d="M0 0L10 5L0 10z"/></marker></defs><rect class="lane" x="0" y="8" width="1240" height="130" rx="14"/><rect class="lane" x="0" y="150" width="1240" height="140" rx="14"/><rect class="lane" x="0" y="302" width="1240" height="128" rx="14"/><text class="ln" x="18" y="78">Jalur</text><text class="ln" x="18" y="96">produksi</text><text class="ln" x="18" y="218">Jalur</text><text class="ln" x="18" y="236">laporan</text><text class="ln" x="18" y="362">Jalur</text><text class="ln" x="18" y="380">data</text><line class="grp" x1="150" x2="1030" y1="40" y2="40"/><text class="gl" x="590" y="32" text-anchor="middle">Lini perakitan sepeda motor</text><rect class="box" x="150" y="52" width="130" height="60" rx="10"/><text class="bt" x="215.0" y="78" text-anchor="middle">Frame</text><text class="bt" x="215.0" y="94" text-anchor="middle">Welding</text><line class="ar" x1="280" x2="296" y1="82" y2="82" marker-end="url(#mN)"/><rect class="box" x="300" y="52" width="130" height="60" rx="10"/><text class="bt" x="365.0" y="78" text-anchor="middle">Engine</text><text class="bt" x="365.0" y="94" text-anchor="middle">Assembly</text><line class="ar" x1="430" x2="446" y1="82" y2="82" marker-end="url(#mN)"/><rect class="box" x="450" y="52" width="130" height="60" rx="10"/><text class="bt" x="515.0" y="78" text-anchor="middle">Main Line</text><text class="bt" x="515.0" y="94" text-anchor="middle">Assembly</text><line class="ar" x1="580" x2="596" y1="82" y2="82" marker-end="url(#mN)"/><rect class="box" x="600" y="52" width="130" height="60" rx="10"/><text class="bt" x="665.0" y="78" text-anchor="middle">Roller</text><text class="bt" x="665.0" y="94" text-anchor="middle">Test</text><line class="ar" x1="730" x2="746" y1="82" y2="82" marker-end="url(#mN)"/><rect class="box" x="750" y="52" width="130" height="60" rx="10"/><text class="bt" x="815.0" y="78" text-anchor="middle">Final</text><text class="bt" x="815.0" y="94" text-anchor="middle">Inspection</text><line class="ar" x1="880" x2="896" y1="82" y2="82" marker-end="url(#mN)"/><rect class="box" x="900" y="52" width="130" height="60" rx="10"/><text class="bt" x="965.0" y="87" text-anchor="middle">Packaging</text><line class="ar" x1="1030" x2="1066" y1="82" y2="82" marker-end="url(#mN)"/><text class="bt" x="1072" y="87">Dealer</text><line class="dt" x1="815.0" x2="815.0" y1="114" y2="198" marker-end="url(#mN)"/><text class="st" x="825.0" y="160">output, NG, rework tercatat</text><rect class="box" x="593" y="202" width="180" height="56" rx="10"/><text class="bt b" x="683.0" y="225" text-anchor="middle">Unduh data</text><text class="st" x="683.0" y="245" text-anchor="middle">engineer, pagi hari</text><line class="ar" x1="773" x2="815" y1="230" y2="230" marker-end="url(#mN)"/><rect class="box" x="819" y="202" width="180" height="56" rx="10"/><text class="bt b" x="909.0" y="225" text-anchor="middle">Susun laporan</text><text class="st" x="909.0" y="245" text-anchor="middle">Excel manual</text><line class="ar" x1="999" x2="1041" y1="230" y2="230" marker-end="url(#mN)"/><rect class="box" x="1045" y="202" width="180" height="56" rx="10"/><text class="bt b" x="1135.0" y="225" text-anchor="middle">Kirim ke grup</text><text class="st" x="1135.0" y="245" text-anchor="middle">siang hari</text><rect class="box" x="150" y="336" width="210" height="62" rx="10"/><text class="bt b" x="255.0" y="362" text-anchor="middle">Database produksi</text><text class="st" x="255.0" y="382" text-anchor="middle">output, NG, rework</text><line class="ar" x1="360" x2="411" y1="367" y2="367" marker-end="url(#mN)"/><rect class="box hi" x="415" y="336" width="210" height="62" rx="10"/><text class="bt b" x="520.0" y="362" text-anchor="middle">Hitung KPI + grafik</text><text class="st" x="520.0" y="382" text-anchor="middle">SQL, Python</text><line class="ar" x1="625" x2="676" y1="367" y2="367" marker-end="url(#mN)"/><rect class="box hi" x="680" y="336" width="210" height="62" rx="10"/><text class="bt b" x="785.0" y="362" text-anchor="middle">Bot Telegram</text><text class="st" x="785.0" y="382" text-anchor="middle">jadwal + alert</text><line class="ar" x1="890" x2="941" y1="367" y2="367" marker-end="url(#mN)"/><rect class="box" x="945" y="336" width="210" height="62" rx="10"/><text class="bt b" x="1050.0" y="362" text-anchor="middle">Grup supervisor</text><text class="st" x="1050.0" y="382" text-anchor="middle">terima pukul 07.00</text><polyline class="dt2" points="1135.0,258 1135.0,296 255.0,296 255.0,332" marker-end="url(#mN)"/><text class="st" x="695" y="290" text-anchor="middle">sumber data yang sama dipakai otomatis</text><text class="gl" x="652" y="422" text-anchor="middle">Bagian yang dibangun di project ini</text><line class="grp" x1="415" x2="890" y1="404" y2="404"/><circle class="mk" cx="130" cy="58" r="13"/><text class="mt" x="130" y="63" text-anchor="middle">1</text><circle class="mk" cx="785.0" cy="140" r="13"/><text class="mt" x="785.0" y="145" text-anchor="middle">2</text><circle class="mk" cx="583" cy="202" r="13"/><text class="mt" x="583" y="207" text-anchor="middle">3</text><circle class="mk" cx="130" cy="342" r="13"/><text class="mt" x="130" y="347" text-anchor="middle">4</text></svg></div>
+<ol class="legend"><li><b>Jalur produksi.</b> Sepeda motor dirakit dan diuji di 10 stasiun. Setiap stasiun mencatat output, NG, dan rework per shift.</li><li><b>Data tercatat.</b> Catatan harian masuk ke database, seperti stasiun cuaca yang menyimpan hasil ukurnya.</li><li><b>Jalur laporan.</b> Hari ini engineer mengunduh data, menyusun laporan di Excel, lalu mengirimnya ke grup. Laporan biasanya baru sampai siang hari.</li><li><b>Jalur data.</b> Setiap pagi jadwal otomatis menghitung KPI, membuat grafik, dan bot mengirimkannya ke grup. Jika yield di bawah ambang, bot mengirim alert.</li></ol>
+</div>
+</section>
+<div class="kpis"><div class="card kpi" style="--h:var(--navyH)"><span class="v">12</span><span class="l">pertanyaan analisis</span><span class="d">Hal yang ingin dijawab, 8 di antaranya prioritas utama (bagian 2).</span></div><div class="card kpi" style="--h:var(--amberH)"><span class="v">5</span><span class="l">ukuran kinerja (KPI)</span><span class="d">Yield, NG rate, rework rate, on-time delivery bot, serta precision dan recall alert (bagian 3).</span></div><div class="card kpi" style="--h:var(--tealH)"><span class="v">12</span><span class="l">langkah pengerjaan</span><span class="d">Dari definisi KPI dan aturan alert sampai bot berjalan terjadwal (bagian 6).</span></div><div class="card kpi" style="--h:var(--plumH)"><span class="v">3</span><span class="l">perintah bot</span><span class="d">/yield, /top_ng, dan /trend 7d, ditambah ringkasan harian dan alert.</span></div><div class="card kpi" style="--h:var(--roseH)"><span class="v">±3 bulan</span><span class="l">periode data</span><span class="d">Data produksi simulasi 10 stasiun, 3 model, 2 shift.</span></div><div class="card kpi" style="--h:var(--skyH)"><span class="v">5</span><span class="l">tabel data</span><span class="d">3 tabel produksi, aturan alert, dan log pengiriman (bagian 4).</span></div></div>
+<h2 id="s1">1. Background<small>Kenapa tema ini dipilih</small></h2>
+<div class="card two">
+<div><h3>Latar belakang masalah</h3>
+<p>Di banyak lini produksi, laporan KPI harian disusun manual. Seseorang mengunduh data, menghitung di Excel, membuat grafik, lalu mengirimnya ke grup chat. Akibatnya:</p>
+<ul class="tight"><li>Laporan harian memakan waktu setiap pagi, dan tertunda jika penyusunnya cuti atau sibuk.</li><li>Masalah di shift malam baru diketahui siang hari, saat laporan sampai.</li><li>Format dan rumus laporan bisa berbeda antar penyusun.</li><li>Tidak ada aturan jelas kapan sebuah penurunan yield perlu segera dilaporkan.</li></ul></div>
+<div><h3>Alasan memilih tema ini sebagai portofolio</h3>
+<ul class="tight"><li><b>Dekat dengan pekerjaan sehari-hari.</b> Menyusun laporan output, yield, dan rework adalah rutinitas Process Engineer, sehingga kebutuhan pengguna sudah dipahami.</li><li><b>Menunjukkan skill otomatisasi pelaporan.</b> SQL untuk KPI, grafik otomatis, aturan alert yang dievaluasi dengan data, penjadwalan, dan pengelolaan secret.</li><li><b>Tingkat kesulitan sulit.</b> Perhitungannya deskriptif, tetapi pipeline harus andal dan berjalan sendiri setiap hari: data terlambat, data kosong, dan kegagalan kirim harus ditangani.</li><li><b>Memakai ulang project lain.</b> Struktur tabel dan definisi KPI mengikuti Project 3 (Yield, Rework &amp; Defect Tracking). Bot bisa membaca hasil Project 27 (Analytics Engineering Mini-Warehouse).</li></ul></div>
+</div>
+<h2 id="s2">2. Business Questions<small>Satu pertanyaan utama, dipecah menjadi pertanyaan yang lebih kecil</small></h2>
+<div class="callout a"><h4>Pertanyaan utama</h4>Bagaimana mengirim ringkasan KPI harian (yield, NG rate, rework rate per stasiun) beserta grafik ke Telegram secara otomatis, dengan alert yang menangkap masalah nyata tanpa terlalu banyak alarm palsu?</div>
+<p class="how">Pertanyaan utama terlalu besar untuk dijawab sekaligus, jadi dipecah per tema. Label "Utama" berarti wajib dijawab dan dikerjakan lebih dulu. "Pendukung" memperdalam hasil. "Tambahan" dikerjakan jika waktu tersisa. Teks abu-abu di bawah tiap pertanyaan adalah cara menjawabnya.</p>
+<div class="fbar" role="group" aria-label="Filter pertanyaan"><span>Tampilkan:</span><button type="button" class="fb on" data-f="*">Semua <i>12</i></button><button type="button" class="fb" data-f="M">Utama <i>8</i></button><button type="button" class="fb" data-f="S">Pendukung <i>3</i></button><button type="button" class="fb" data-f="N">Tambahan <i>1</i></button></div>
+<div class="qgrid" id="qg">
+<p class="theme">KPI harian: kondisi lini kemarin</p>
+<div class="q" data-p="M"><span class="id">Q1</span><span>Berapa yield, NG rate, dan rework rate per stasiun kemarin, dan stasiun mana yang terburuk?<span class="pri M">Utama</span></span><span class="m">KPI harian per stasiun</span></div>
+<div class="q" data-p="M"><span class="id">Q2</span><span>Defect apa yang menjadi 3 teratas kemarin dan dalam 7 hari terakhir?<span class="pri M">Utama</span></span><span class="m">Pareto harian dan 7 hari</span></div>
+<div class="q" data-p="S"><span class="id">Q3</span><span>Bagaimana kondisi 7 hari terakhir dibanding 7 hari sebelumnya?<span class="pri S">Pendukung</span></span><span class="m">Perbandingan dua periode</span></div>
+<p class="theme">Alert: kapan harus memberi tahu</p>
+<div class="q" data-p="M"><span class="id">Q4</span><span>Ambang yield berapa yang menangkap semua penurunan nyata dengan alert palsu paling sedikit?<span class="pri M">Utama</span></span><span class="m">Precision dan recall per ambang</span></div>
+<div class="q" data-p="M"><span class="id">Q5</span><span>Berapa lama jeda dari kejadian sampai alert diterima?<span class="pri M">Utama</span></span><span class="m">Selisih waktu kejadian dan kirim</span></div>
+<div class="q" data-p="S"><span class="id">Q6</span><span>Aturan lonjakan NG mana yang paling tepat, misalnya naik lebih dari 50% dari rata-rata 7 hari?<span class="pri S">Pendukung</span></span><span class="m">Perbandingan aturan</span></div>
+<p class="theme">Keandalan: apakah laporan selalu sampai</p>
+<div class="q" data-p="M"><span class="id">Q7</span><span>Berapa persen laporan harian yang terkirim tepat waktu?<span class="pri M">Utama</span></span><span class="m">On-time delivery rate dari log</span></div>
+<div class="q" data-p="M"><span class="id">Q8</span><span>Apa yang dilakukan bot saat data terlambat atau kosong?<span class="pri M">Utama</span></span><span class="m">Uji skenario data hilang</span></div>
+<div class="q" data-p="S"><span class="id">Q9</span><span>Apakah token dan data tersimpan aman, tanpa secret di kode atau repositori?<span class="pri S">Pendukung</span></span><span class="m">Pemeriksaan secret dan izin</span></div>
+<p class="theme">Dampak: waktu yang dihemat</p>
+<div class="q" data-p="M"><span class="id">Q10</span><span>Berapa menit penyusunan laporan manual yang digantikan per laporan?<span class="pri M">Utama</span></span><span class="m">Waktu manual vs otomatis</span></div>
+<div class="q" data-p="N"><span class="id">Q11</span><span>Berapa jam kerja per tahun yang bisa dihemat?<span class="pri">Tambahan</span></span><span class="m">Laporan per tahun × menit per laporan ÷ 60</span></div>
+<p class="theme">Validitas: apakah angkanya benar</p>
+<div class="q" data-p="M"><span class="id">Q12</span><span>Apakah angka di pesan bot sama dengan query SQL dan hitungan manual Excel?<span class="pri M">Utama</span></span><span class="m">Cek silang tiga sumber</span></div>
+</div>
+<h2 id="s3">3. Daily Report &amp; Alert Rules<span class="add">Komponen tambahan</span><small>Apa yang dilakukan bot setiap pagi, dan bagaimana memilih ambang alert</small></h2>
+<p class="how">Setiap pagi bot melewati tiga pengecekan sebelum mengirim pesan. Arahkan kursor atau klik kata yang diberi garis bawah kuning untuk melihat pengertian dan rumusnya.</p>
+<div class="flowfull"><h3>Alur pengiriman harian</h3>
+<div class="card"><div class="figw fl"><svg viewBox="0 0 1050 245" role="img" aria-label="Diagram percabangan: setiap pukul 07.00 bot mengecek data kemarin; jika tidak ada, mengirim pesan data belum masuk; jika tidak valid, mengirim log error ke admin; jika yield di bawah ambang, mengirim alert; jika tidak, mengirim ringkasan harian"><defs><marker id="fN" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah" d="M0 0L10 5L0 10z"/></marker><marker id="fT" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="aht" d="M0 0L10 5L0 10z"/></marker><marker id="fA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="aha2" d="M0 0L10 5L0 10z"/></marker></defs><rect class="box" x="8" y="40" width="112" height="50" rx="10"/><text class="b2" x="64" y="62" text-anchor="middle">Jadwal</text><text class="b2" x="64" y="78" text-anchor="middle">07.00</text><line class="ar" x1="120" x2="148" y1="65" y2="65" marker-end="url(#fN)"/><polygon class="dia" points="150,65 239,25 328,65 239,105"/><text class="b2" x="239" y="70" text-anchor="middle">Data kemarin ada?</text><line class="arT" x1="328" x2="364" y1="65" y2="65" marker-end="url(#fT)"/><text class="lt" x="334" y="56">Ya</text><line class="arA" x1="239" x2="239" y1="105" y2="171" marker-end="url(#fA)"/><text class="la" x="247" y="145">Tidak</text><rect class="scb" x="163.0" y="175" width="152" height="56" rx="14"/><text class="at" x="239" y="198" text-anchor="middle">Kirim pesan:</text><text class="at" x="239" y="218" text-anchor="middle">data belum masuk</text><polygon class="dia" points="368,65 431,25 494,65 431,105"/><text class="b2" x="431" y="70" text-anchor="middle">Data valid?</text><line class="arT" x1="494" x2="530" y1="65" y2="65" marker-end="url(#fT)"/><text class="lt" x="500" y="56">Ya</text><line class="arA" x1="431" x2="431" y1="105" y2="171" marker-end="url(#fA)"/><text class="la" x="439" y="145">Tidak</text><rect class="scb" x="356.0" y="175" width="150" height="56" rx="14"/><text class="at" x="431" y="198" text-anchor="middle">Kirim log error</text><text class="at" x="431" y="218" text-anchor="middle">ke admin</text><polygon class="dia" points="534,65 627,25 720,65 627,105"/><text class="b2" x="627" y="70" text-anchor="middle">Yield &lt; ambang?</text><line class="arT" x1="720" x2="756" y1="65" y2="65" marker-end="url(#fT)"/><text class="lt" x="726" y="56">Tidak</text><line class="arA" x1="627" x2="627" y1="105" y2="171" marker-end="url(#fA)"/><text class="la" x="635" y="145">Ya</text><rect class="scb" x="552.0" y="175" width="150" height="56" rx="14"/><text class="at" x="627" y="198" text-anchor="middle">Kirim ALERT</text><text class="at" x="627" y="218" text-anchor="middle">+ ringkasan</text><rect class="okb" x="760" y="45" width="130" height="40" rx="20"/><text class="wt" x="825" y="70" text-anchor="middle">Ringkasan</text><line class="ar" x1="890" x2="916" y1="65" y2="65" marker-end="url(#fN)"/><rect class="box" x="920" y="40" width="122" height="50" rx="10"/><text class="b2" x="981" y="62" text-anchor="middle">Terkirim</text><text class="b2" x="981" y="78" text-anchor="middle">ke grup</text></svg></div>
+<p>Bot selalu mengirim sesuatu setiap pagi. Jika tidak ada pesan sama sekali, itu tanda pipeline rusak, bukan tanda lini aman.</p></div></div>
+<h3>Bagaimana memilih ambang alert yield</h3>
+<p class="how">Garis biru adalah yield harian lini selama 60 hari (angka contoh, bukan hasil dari data). Area hijau adalah 3 kejadian penurunan yang nyata. Geser slider untuk mengubah ambang alert dan lihat berapa kejadian yang tertangkap dan berapa alert palsu.</p>
+<div class="card"><div class="chart" id="ch"></div>
+<div class="ctl"><label for="sl">Ambang alert yield</label><input id="sl" type="range" min="88" max="97" step="0.5" value="94"><output id="slo" for="sl">94%</output></div>
+<div class="res"><div>Hari dengan alert<b id="r1"></b></div><div>Kejadian tertangkap<b id="r2"></b></div><div>Alert palsu<b id="r3"></b></div></div>
+<p id="ins" style="margin:12px 0 0;font-size:15.5px"></p></div>
+<h2 id="s4">4. Dataset<small>Data produksi simulasi buatan sendiri, ditambah log pengiriman bot</small></h2>
+<div class="two"><div class="card">
+<p><b>Kenapa data simulasi?</b> Data pabrik bersifat rahasia, dan pesan bot tidak boleh berisi data perusahaan. Program Python membuat data produksi dengan struktur Project 3 dan menanam kejadian yang harus ditangkap alert.</p>
+<p><b>Ukuran:</b> 10 stasiun, 3 model, 2 shift, sekitar 75 hari kerja. Perkiraan ±4.500 baris produksi harian dan ±6.000 baris defect. Log pengiriman bertambah satu baris untuk setiap pesan.</p>
+<p class="src"><b>Sumber data:</b> data simulasi buatan sendiri, dibuat oleh skrip <code>scripts/generate_data.py</code> di repositori project (Versi: v1, rancangan; Tanggal dibuat: saat Tahap B dikerjakan). Tidak memakai dataset publik atau data perusahaan.</p>
+</div>
+<div class="callout g"><h4>Fakta yang sengaja ditanam (ground truth)</h4>
+<p>1. Tiga kejadian penurunan yield: 2 hari di Engine Assembly, 1 hari di Frame Painting, dan penurunan perlahan selama ±1 minggu di Roller Test.</p><p>2. Dua hari data terlambat masuk (baru tersedia siang hari).</p><p>3. Satu hari data kosong sama sekali.</p><p>4. Satu lonjakan NG pada satu defect yang tidak menurunkan yield lini secara besar, untuk menguji aturan lonjakan NG.</p><p>5. Sekitar 2–3% data kotor: jumlah negatif, OK + NG lebih dari input, baris ganda.</p></div></div>
+<h3>Lima tabel yang akan dibuat</h3>
+<p class="how">Tiga tabel pertama adalah data produksi dengan struktur Project 3. Dua tabel terakhir mengatur dan mencatat kerja bot.</p>
+<div class="scroll"><table>
+<tr><th>Tabel</th><th>Isi (1 baris = …)</th><th>Kolom utama</th></tr><tr><td><b>production_daily</b></td><td>Hasil satu stasiun, satu model, satu shift, satu hari</td><td>date, shift, station, model, input_qty, ok_first_pass, ng_qty</td></tr><tr><td><b>defect_log</b></td><td>Jumlah satu jenis defect per stasiun, model, shift, hari</td><td>date, shift, station, model, defect_code, qty</td></tr><tr><td><b>rework_log</b></td><td>Satu unit NG yang masuk rework</td><td>rework_id, date_in, date_out, station_origin, defect_code, result</td></tr><tr><td><b>alert_rule</b></td><td>Satu aturan alert (tabel referensi)</td><td>rule_id, kpi, scope, threshold, window_days, active</td></tr><tr><td><b>delivery_log</b></td><td>Satu pesan yang dikirim atau gagal dikirim</td><td>sent_at, message_type (daily / alert / command), status, latency_s, error</td></tr></table></div>
+<div class="two"><div><h3>Contoh isi tabel delivery_log</h3>
+<div class="scroll"><table class="sample"><tr><th>sent_at</th><th>message_type</th><th>status</th><th>latency_s</th></tr><tr><td>2026-03-02 07:00</td><td>daily</td><td>sent</td><td>4</td></tr><tr><td>2026-03-03 07:00</td><td>alert</td><td>sent</td><td>5</td></tr><tr><td>2026-03-04 07:00</td><td>no_data</td><td>sent</td><td>2</td></tr></table></div>
+<p class="note">Angka karangan, bukan data asli. Baris ketiga contoh hari ketika data belum masuk dan bot memberi tahu.</p></div>
+<div class="card"><p style="margin:0 0 6px"><b>Contoh pesan harian</b> (usulan awal):</p>
+<p class="note" style="font-size:14.5px;color:var(--ink);background:var(--sub);border-radius:10px;padding:10px 12px;margin:0">Laporan 3 Mar 2026 · Yield lini 95,1% (−0,4 vs 7 hari) · Terburuk: Engine Assembly 92,3% · Top NG: kebocoran oli, baut kendor, cat mengelupas · [grafik tren 7 hari]</p>
+<p style="margin:10px 0 4px"><b>Perintah bot:</b></p><span class="chip">/yield</span><span class="chip">/top_ng</span><span class="chip">/trend 7d</span><span class="chip">/help</span></div></div>
+<h2 id="s5">5. Tools<small>Alat yang dipakai dan alasannya</small></h2>
+<div class="tools"><div class="card"><b>Python (pandas, matplotlib)</b><p class="r">Mengambil hasil query, membuat grafik tren dan Pareto sebagai gambar, lalu menyusun teks pesan.</p><p class="alt">Grafik statis matplotlib cocok untuk dikirim sebagai foto di Telegram.</p></div><div class="card"><b>DuckDB + SQL</b><p class="r">Database produksi dan view KPI (yield, NG rate, rework rate, Pareto) yang dipakai bot dan dashboard.</p><p class="alt">Satu sumber rumus KPI. Daftar portofolio menulis SQLite/DuckDB; DuckDB dipilih agar konsisten.</p></div><div class="card"><b>python-telegram-bot</b><p class="r">Mengirim pesan dan grafik ke grup, serta menjawab perintah /yield, /top_ng, /trend.</p><p class="alt">Library resmi komunitas yang paling banyak dipakai. Token disimpan di secrets.</p></div><div class="card"><b>GitHub Actions</b><p class="r">Menjalankan pipeline setiap pagi pukul 07.00 (cron), menyimpan log, dan menjalankan tes.</p><p class="alt">Gratis untuk repositori publik dan tidak perlu server sendiri.</p></div><div class="card"><b>Streamlit</b><p class="r">Dashboard pendamping untuk melihat riwayat KPI, riwayat alert, dan log pengiriman.</p><p class="alt">Untuk pembaca yang ingin detail lebih dari pesan singkat.</p></div><div class="card"><b>GitHub + Markdown</b><p class="r">Menyimpan kode, contoh screenshot pesan, dan README dengan diagram alur data.</p><p class="alt">Standar industri untuk portofolio.</p></div></div>
+<h2 id="s6">6. Work Plan<small>Setiap tahap punya warna sendiri. Label "beban besar" = langkah yang paling banyak memakan waktu</small></h2>
+<p class="how">Urutannya seperti menyiapkan layanan antar koran pagi: tentukan isi koran dan kapan dikirim, siapkan percetakan, uji rute pengiriman, baru jalankan setiap hari.</p>
+<h3>Alur tahapan kerja</h3>
+<div class="card"><div class="wf">
+<div class="wrow"><div class="wl" style="--c:var(--navyH)"><h4>Tahap A · Perencanaan</h4><div class="ws" style="--k:2"><div class="wb"><span class="n">1</span><b>Definisi KPI &amp; pesan</b><span class="s">isi pesan</span></div><div class="wb"><span class="n">2</span><b>Aturan alert awal</b><span class="s">alert_rule</span></div></div></div><div class="wl" style="--c:var(--tealH)"><h4>Tahap B · Menyiapkan data</h4><div class="ws" style="--k:3"><div class="wb"><span class="n">3</span><b>Membuat data simulasi</b><span class="s">CSV + ground truth</span></div><div class="wb"><span class="n">4</span><b>Memuat &amp; view KPI</b><span class="s">file DuckDB</span></div><div class="wb"><span class="n">5</span><b>Membuat bot Telegram</b><span class="s">token di secrets</span></div></div></div></div>
+<div class="wa r"><span>↓</span></div>
+<div class="wl" style="--c:var(--plumH)"><h4>Tahap C · Menghitung dan menganalisis</h4><div class="ws rev" style="--k:5"><div class="wb L"><span class="n">6</span><b>Pipeline laporan</b><span class="s">Q1–Q3</span></div><div class="wb L"><span class="n">7</span><b>Evaluasi ambang alert</b><span class="s">Q4–Q6</span></div><div class="wb"><span class="n">8</span><b>Perintah bot</b><span class="s">/yield /top_ng /trend</span></div><div class="wb"><span class="n">9</span><b>Jadwal &amp; uji gagal</b><span class="s">Q7, Q8</span></div><div class="wb"><span class="n">10</span><b>Cek silang &amp; dampak</b><span class="s">Q10–Q12</span></div></div></div>
+<div class="wa l"><span>↓</span></div>
+<div class="wrow1"><div class="wl" style="--c:var(--roseH)"><h4>Tahap D · Menyajikan</h4><div class="ws" style="--k:2"><div class="wb L"><span class="n">11</span><b>Dashboard pendamping</b><span class="s">riwayat KPI &amp; alert</span></div><div class="wb"><span class="n">12</span><b>README &amp; finalisasi</b><span class="s">repositori siap</span></div></div></div></div>
+</div>
+<p class="note" style="text-align:center;margin-top:12px">Panah menunjukkan urutan pengerjaan. Angka di kotak sama dengan nomor langkah di bawah.</p></div>
+<div class="phases"><div class="ph" style="--ph:var(--navyH)"><p class="phase">Tahap A · Perencanaan</p>
+<ol class="steps">
+<li><b class="t">Menyepakati definisi KPI dan isi pesan</b><p>Menetapkan rumus yield, NG rate, rework rate, isi ringkasan harian, dan perintah bot.</p><p class="meta">Hasil: dokumen definisi dan contoh pesan · Alat: Markdown</p></li>
+<li><b class="t">Menyusun aturan alert awal</b><p>Menulis aturan awal (yield di bawah ambang, lonjakan NG) dan perilaku saat data terlambat atau kosong.</p><p class="meta">Hasil: tabel alert_rule · Alat: Markdown, YAML</p></li>
+</ol></div>
+<div class="ph" style="--ph:var(--tealH)"><p class="phase">Tahap B · Menyiapkan data</p>
+<ol class="steps" style="counter-reset:s 2">
+<li><b class="t">Membuat data simulasi</b><p>Memakai ulang generator dengan struktur Project 3, menanam 3 kejadian penurunan, data terlambat, dan data kosong.</p><p class="meta">Hasil: file CSV, catatan ground truth · Alat: Python</p></li>
+<li><b class="t">Memuat data dan membuat view KPI</b><p>Membersihkan data kotor, memuat ke DuckDB, dan membuat view KPI harian.</p><p class="meta">Hasil: file database · Alat: DuckDB, SQL</p></li>
+<li><b class="t">Membuat bot dan grup uji</b><p>Mendaftarkan bot, membuat grup uji, dan menyimpan token di secrets, bukan di kode (Q9).</p><p class="meta">Hasil: bot aktif di grup uji · Alat: Telegram BotFather</p></li>
+</ol></div>
+<div class="ph" style="--ph:var(--plumH)"><p class="phase">Tahap C · Menghitung dan menganalisis</p>
+<ol class="steps" style="counter-reset:s 5">
+<li class="L"><b class="t">Membangun pipeline laporan harian</b><p>Mengambil KPI kemarin, membuat grafik, menyusun pesan, dan mengirimnya. Menjawab Q1–Q3 di dalam pesan.</p><p class="meta">Hasil: skrip report.py · Alat: Python, SQL, matplotlib</p></li>
+<li class="L"><b class="t">Mengevaluasi ambang alert</b><p>Menguji banyak ambang dan aturan lonjakan pada data historis, lalu memilih yang menangkap semua kejadian dengan alert palsu paling sedikit (Q4–Q6).</p><p class="meta">Hasil: tabel precision dan recall · Alat: Python (pandas)</p></li>
+<li><b class="t">Menambahkan perintah bot</b><p>Menjawab /yield, /top_ng, dan /trend 7d dengan angka dan grafik dari view KPI.</p><p class="meta">Hasil: modul perintah · Alat: python-telegram-bot</p></li>
+<li><b class="t">Menjadwalkan dan menguji skenario gagal</b><p>Menjadwalkan pipeline di GitHub Actions, lalu menguji data terlambat, data kosong, dan gagal kirim (Q7–Q8).</p><p class="meta">Hasil: workflow dan delivery_log · Alat: GitHub Actions</p></li>
+<li><b class="t">Cek silang angka dan menghitung dampak</b><p>Mencocokkan angka pesan dengan SQL dan Excel, lalu menghitung menit dan jam yang dihemat dengan label estimasi (Q10–Q12).</p><p class="meta">Hasil: lembar cek silang · Alat: Excel, Python</p></li>
+</ol></div>
+<div class="ph" style="--ph:var(--roseH)"><p class="phase">Tahap D · Menyajikan</p>
+<ol class="steps" style="counter-reset:s 10">
+<li class="L"><b class="t">Membuat dashboard pendamping</b><p>Dashboard riwayat KPI, riwayat alert, dan log pengiriman, dipublikasikan agar bisa dibuka lewat link.</p><p class="meta">Hasil: link dashboard · Alat: Streamlit</p></li>
+<li><b class="t">Menulis README, rekomendasi, dan finalisasi</b><p>Menulis masalah, diagram alur data, contoh screenshot pesan, definisi KPI, hasil evaluasi alert, dan batasan.</p><p class="meta">Hasil: repositori GitHub siap ditinjau · Alat: Markdown, GitHub</p></li>
+</ol></div>
+</div>
+<h2 id="s7">7. Project Outputs<span class="add">Komponen tambahan</span><small>Hasil nyata yang bisa dibuka, dibaca, atau dipakai ulang setelah project selesai</small></h2>
+<p class="how">Setiap kartu adalah satu output. Label "Utama" berarti wajib dibuat, "Opsional" dibuat jika waktu tersisa. Setiap output ditujukan untuk pembaca yang berbeda.</p>
+<div class="outs"><div class="card out" style="--h:var(--navyH)"><div class="oh"><b>Bot Telegram</b><span class="ob">Utama</span></div><ul><li>Mengirim ringkasan harian, alert, dan menjawab 3 perintah.</li><li>Berjalan otomatis setiap pagi.</li><li>Bentuk: bot di grup demo dan screenshot pesan.</li><li>Untuk: supervisor dan engineer lini.</li></ul></div><div class="card out" style="--h:var(--roseH)"><div class="oh"><b>Pipeline terjadwal</b><span class="ob">Utama</span></div><ul><li>Workflow GitHub Actions yang menghitung KPI dan mengirim pesan.</li><li>Menangani data terlambat, kosong, dan gagal kirim.</li><li>Bentuk: file workflow .yml dan skrip .py.</li><li>Untuk: engineer yang memelihara laporan.</li></ul></div><div class="card out" style="--h:var(--tealH)"><div class="oh"><b>Evaluasi aturan alert</b><span class="ob">Utama</span></div><ul><li>Precision dan recall berbagai ambang pada data historis.</li><li>Rekomendasi ambang dan alasannya.</li><li>Bentuk: tabel dan grafik di README.</li><li>Untuk: manajemen yang menentukan kapan harus diberi tahu.</li></ul></div><div class="card out" style="--h:var(--plumH)"><div class="oh"><b>Database &amp; query SQL</b><span class="ob">Utama</span></div><ul><li>File DuckDB dan view KPI.</li><li>Satu sumber angka untuk bot dan dashboard.</li><li>Bentuk: folder query .sql.</li><li>Untuk: analis lain.</li></ul></div><div class="card out" style="--h:var(--skyH)"><div class="oh"><b>Dashboard pendamping</b><span class="ob">Utama</span></div><ul><li>Riwayat KPI, alert, dan log pengiriman.</li><li>Filter tanggal, stasiun, dan jenis pesan.</li><li>Bentuk: link publik (Streamlit Community Cloud).</li><li>Untuk: pembaca yang butuh detail.</li></ul></div><div class="card out" style="--h:var(--amberH)"><div class="oh"><b>Laporan temuan &amp; rekomendasi</b><span class="ob">Utama</span></div><ul><li>Masalah, alur data, definisi KPI, hasil evaluasi, dampak, dan batasan.</li><li>Angka dampak diberi label estimasi.</li><li>Bentuk: README di GitHub.</li><li>Untuk: semua pembaca.</li></ul></div><div class="card out" style="--h:var(--navyH)"><div class="oh"><b>Repositori GitHub</b><span class="ob">Utama</span></div><ul><li>Kode, workflow, tes, dan contoh pesan.</li><li>Token tersimpan di secrets.</li><li>Bentuk: link repositori GitHub.</li><li>Untuk: recruiter dan reviewer portofolio.</li></ul></div><div class="card out" style="--h:var(--tealH)"><div class="oh"><b>Slide presentasi</b><span class="ob opt">Opsional</span></div><ul><li>5–7 slide: masalah, alur bot, evaluasi alert, dampak.</li><li>Bentuk: PDF atau PowerPoint.</li><li>Untuk: presentasi saat wawancara kerja.</li></ul></div></div>
+<h3>Daftar dokumen yang akan dihasilkan</h3>
+<p class="how">Nama file adalah usulan awal dan bisa disesuaikan. Tabel diurutkan menurut tahap pengerjaan (A sampai D). Data mentah, file database, dan token bot tidak di-commit.</p>
+<div class="scroll"><table class="docs"><tr><th>Nama dokumen</th><th>Isi</th><th>Tahap</th><th>Label</th></tr><tr><td><code>docs/kpi_and_messages.md</code></td><td>Definisi KPI, isi pesan, dan daftar perintah</td><td>Tahap A</td><td><span class="ob">Utama</span></td></tr><tr><td><code>config/alert_rules.yaml</code></td><td>Aturan alert dan perilaku saat data hilang</td><td>Tahap A</td><td><span class="ob">Utama</span></td></tr><tr><td><code>scripts/generate_data.py</code></td><td>Pembuat data simulasi (seed tetap)</td><td>Tahap B</td><td><span class="ob">Utama</span></td></tr><tr><td><code>data/raw/*.csv</code></td><td>Data simulasi mentah. Tidak di-commit</td><td>Tahap B</td><td><span class="ob">Utama</span></td></tr><tr><td><code>data/ground_truth.json</code></td><td>Kejadian yang ditanam</td><td>Tahap B</td><td><span class="ob">Utama</span></td></tr><tr><td><code>production.duckdb</code></td><td>File database. Tidak di-commit, dibuat ulang dari skrip</td><td>Tahap B</td><td><span class="ob">Utama</span></td></tr><tr><td><code>bot/report.py</code></td><td>Pipeline laporan harian dan alert</td><td>Tahap C</td><td><span class="ob">Utama</span></td></tr><tr><td><code>bot/commands.py</code></td><td>Perintah /yield, /top_ng, /trend</td><td>Tahap C</td><td><span class="ob">Utama</span></td></tr><tr><td><code>.github/workflows/daily.yml</code></td><td>Jadwal harian pukul 07.00</td><td>Tahap C</td><td><span class="ob">Utama</span></td></tr><tr><td><code>notebooks/alert_evaluation.ipynb</code></td><td>Evaluasi ambang dan aturan alert</td><td>Tahap C</td><td><span class="ob">Utama</span></td></tr><tr><td><code>outputs/crosscheck.xlsx</code></td><td>Cek silang angka pesan vs SQL vs Excel</td><td>Tahap C</td><td><span class="ob">Utama</span></td></tr><tr><td><code>dashboard/app.py</code></td><td>Dashboard pendamping</td><td>Tahap D</td><td><span class="ob">Utama</span></td></tr><tr><td><code>docs/screenshots/</code></td><td>Contoh screenshot pesan bot</td><td>Tahap D</td><td><span class="ob">Utama</span></td></tr><tr><td><code>requirements.txt</code></td><td>Daftar library Python</td><td>Tahap D</td><td><span class="ob">Utama</span></td></tr><tr><td><code>README.md</code></td><td>Alur data, temuan, rekomendasi, dampak, batasan</td><td>Tahap D</td><td><span class="ob">Utama</span></td></tr><tr><td><code>index.html</code></td><td>Halaman rancangan project ini (GitHub Pages)</td><td>Tahap D</td><td><span class="ob">Utama</span></td></tr><tr><td><code>slides/presentation.pdf</code></td><td>Slide presentasi wawancara</td><td>Tahap D</td><td><span class="ob opt">Opsional</span></td></tr></table></div>
+<h2 id="s8">8. Success Criteria<span class="add">Komponen tambahan</span><small>Kapan project dianggap selesai dan berhasil</small></h2>
+<div class="card">
+<h3>Project dianggap berhasil jika</h3>
+<ul class="tight"><li>Kedelapan pertanyaan berlabel "Utama" terjawab dengan angka dari data.</li><li>Ambang alert terpilih menangkap ketiga kejadian yang ditanam dengan alert palsu paling banyak 2 dalam 3 bulan.</li><li>Laporan terkirim tepat waktu minimal 95% hari selama uji coba, dan bot memberi tahu saat data terlambat atau kosong.</li><li>Angka di pesan bot sama dengan query SQL dan hitungan manual Excel pada sampel yang dicek.</li><li>Tidak ada token atau secret di kode dan riwayat repositori.</li><li>Checklist standar terpenuhi: pertanyaan bisnis, data cleaning, analisis SQL, dashboard ter-deploy, README berisi insight dan rekomendasi.</li></ul></div>
+<h2 id="s9">9. Assumptions &amp; Limitations<span class="add">Komponen tambahan</span><small>Keputusan yang sudah diambil dan hal yang perlu diwaspadai</small></h2>
+<div class="two"><div><details open><summary>Jenis data: simulasi <span class="pill">Sudah Anda setujui</span></summary><p>Data produksi dibuat program dengan struktur Project 3. Pesan bot hanya dikirim ke grup demo.</p></details><details><summary>Konteks: perakitan sepeda motor <span class="pill">Sudah Anda setujui</span></summary><p>Halaman publik memakai lini perakitan sepeda motor dengan 10 stasiun dan 3 model. Struktur tabel tetap sama dengan Project 3.</p></details><details><summary>Tools: DuckDB + Streamlit <span class="pill">Sudah Anda setujui</span></summary><p>Konsisten dengan project lain. Tools khusus dari daftar portofolio (python-telegram-bot, matplotlib, GitHub Actions) tetap dipakai. Streamlit dipakai untuk dashboard pendamping.</p></details></div>
+<div><details><summary>Ruang lingkup <span class="pill d">Usulan awal</span></summary><p>Satu grup Telegram, satu laporan harian pukul 07.00, alert dicek sekali sehari. Belum real-time per jam. Dampak dihitung dalam menit kerja, belum dalam rupiah. Tingkat kesulitan: sulit.</p></details><details><summary>Hal yang perlu diwaspadai <span class="pill d">Usulan awal</span></summary><p><b>Alert terlalu sering membuat orang abai.</b> Ambang dipilih dari data, dan jumlah alert palsu dilaporkan terbuka.</p><p><b>Jadwal cloud bisa terlambat.</b> GitHub Actions kadang menunda jadwal beberapa menit. Waktu kirim aktual dicatat di delivery_log.</p><p><b>Keamanan data.</b> Di dunia nyata, data perusahaan yang dikirim ke aplikasi chat perlu izin perusahaan. Project ini hanya memakai data simulasi.</p><p><b>Pola belum tentu penyebab.</b> Alert menunjukkan kapan yield turun, bukan kenapa. Investigasi tetap dilakukan di lapangan.</p></details></div></div>
+</main>
+<script>
+const $=id=>document.getElementById(id),f1=v=>v.toFixed(1).replace('.',',');
+function mb(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const R=mb(23),D=60,INC=[[11,12],[30,30],[43,49]],Y=[];
+for(let d=0;d<D;d++){let y=95.6+(R()-.5)*1.6;if(d==11||d==12)y-=3.6;if(d==30)y-=2.6;if(d>=43&&d<=49)y-=[.8,1.2,1.6,2,2.2,2,1.5][d-43];Y.push(Math.round(y*10)/10)}
+const inInc=d=>INC.some(([a,b])=>d>=a&&d<=b);
+function draw(){const th=+$('sl').value,A=Y.map((y,d)=>y<th?d:-1).filter(d=>d>=0),caught=INC.filter(([a,b])=>A.some(d=>d>=a&&d<=b)).length,fa=A.filter(d=>!inInc(d)).length;
+$('slo').textContent=f1(th).replace(',0','')+'%';
+const W=1000,H=200,y0=89,y1=98,sx=d=>d/(D-1)*W,sy=v=>H-(v-y0)/(y1-y0)*H;
+let s=`<svg viewBox="-40 -10 ${W+110} ${H+40}" role="img" aria-label="Grafik yield harian 60 hari dengan garis ambang alert">`;
+INC.forEach(([a,b])=>s+=`<rect class="inc" x="${sx(a)-6}" y="0" width="${sx(b)-sx(a)+12}" height="${H}"/>`);
+[90,92,94,96,98].forEach(v=>s+=`<line class="ax" x1="0" x2="${W}" y1="${sy(v)}" y2="${sy(v)}"/><text class="tx" x="-8" y="${sy(v)+4}" text-anchor="end">${v}%</text>`);
+s+=`<polyline class="ln2" points="${Y.map((y,d)=>sx(d)+','+sy(y)).join(' ')}"/>`;
+A.forEach(d=>s+=`<circle class="dot" cx="${sx(d)}" cy="${sy(Y[d])}" r="5"/>`);
+s+=`<line class="th" x1="0" x2="${W}" y1="${sy(th)}" y2="${sy(th)}"/><text class="tx" x="${W+4}" y="${sy(th)+4}" style="fill:var(--amberH);font-weight:700">ambang</text>`;
+[0,10,20,30,40,50,59].forEach(d=>s+=`<text class="tx" x="${sx(d)}" y="${H+18}" text-anchor="middle">hari ${d+1}</text>`);
+$('ch').innerHTML=s+'</svg>';
+$('r1').textContent=A.length;$('r2').textContent=caught+' / 3';$('r3').textContent=fa;
+const ft=f1(th).replace(',0','');$('ins').innerHTML=!A.length?`Dengan ambang ${ft}%, tidak ada satu pun alert, sehingga ketiga kejadian penurunan terlewat. Naikkan ambang untuk mulai menangkap kejadian.`:`Dengan ambang ${ft}%, bot mengirim <b>${A.length} alert</b> dalam 60 hari: <b>${caught} dari 3 kejadian</b> tertangkap dan <b>${fa} alert palsu</b>. ${caught<3?'Ambang terlalu rendah untuk penurunan perlahan.':fa>4?'Semua kejadian tertangkap, tetapi alert palsu yang terlalu sering membuat orang mulai mengabaikan pesan.':'Semua kejadian tertangkap dengan alert palsu yang sedikit.'}`}
+$('sl').oninput=draw;draw();
+const G=[["bot","i","Program yang berjalan otomatis di aplikasi chat, misalnya mengirim pesan atau menjawab perintah."],["Telegram","","Aplikasi pesan instan yang menyediakan Bot API gratis untuk mengirim pesan otomatis."],["pipeline","i","Rangkaian langkah otomatis dari data mentah sampai hasil terkirim."],["yield","i","Persentase produk yang lolos dibanding produk yang masuk (input).\nRumus: yield = OK percobaan pertama ÷ input."],["NG rate","i","Persentase produk yang gagal pemeriksaan.\nRumus: NG rate = NG ÷ input."],["rework rate","i","Persentase produk yang harus diperbaiki.\nRumus: rework rate = unit masuk rework ÷ input."],["alert","i","Pesan peringatan yang dikirim saat KPI melewati ambang."],["ambang","i","Batas angka yang memicu alert, misalnya yield di bawah 94%."],["precision","i","Persentase alert yang memang menunjuk kejadian nyata.\nRumus: precision = alert benar ÷ total alert."],["recall","i","Persentase kejadian nyata yang tertangkap alert.\nRumus: recall = kejadian tertangkap ÷ total kejadian."],["alert palsu","i","Alert yang terkirim padahal tidak ada kejadian nyata."],["on-time delivery","i","Persentase laporan yang terkirim sebelum batas waktu.\nRumus: on-time delivery = laporan terkirim ≤ 07.15 ÷ total hari kerja."],["cron","","Format penjadwalan untuk menjalankan tugas otomatis pada waktu tertentu, misalnya setiap hari pukul 07.00."],["GitHub Actions","","Layanan GitHub untuk menjalankan skrip otomatis, termasuk sesuai jadwal."],["secrets","i","Tempat menyimpan kunci rahasia seperti token bot di luar kode."],["token","i","Kunci rahasia yang dipakai program untuk mengendalikan bot. Siapa pun yang memegangnya bisa mengirim pesan atas nama bot."],["Pareto","i","Cara mengurutkan masalah dari yang paling sering (aturan 80/20)."],["defect","i","Jenis kerusakan atau kegagalan pada produk, misalnya baut kendor atau cat mengelupas."],["NG","","Not Good: produk yang gagal pemeriksaan."],["rework","i","Memperbaiki produk yang gagal pemeriksaan, lalu mengujinya ulang."],["KPI","","Key Performance Indicator: angka kunci untuk menilai kinerja."],["SQL","","Bahasa untuk meminta dan mengolah data dari tabel database."],["DuckDB","i","Database ringan dalam satu file, untuk menjalankan SQL tanpa server."],["view","i","Query SQL yang disimpan dengan nama, sehingga bisa dipanggil seperti tabel."],["matplotlib","","Library Python untuk membuat grafik statis seperti gambar PNG."],["dashboard","i","Halaman ringkasan interaktif berisi grafik dan angka kunci."],["Streamlit","i","Alat untuk membuat dashboard web memakai Python."],["ground truth","i","Fakta yang sengaja ditanam di data simulasi untuk memeriksa apakah analisis berhasil menemukannya."],["data simulasi","i","Data buatan komputer yang meniru kondisi nyata, bukan hasil pencatatan di pabrik."],["shift","i","Pembagian jam kerja, misalnya shift pagi dan shift malam."],["README","","Dokumen penjelasan project yang dibaca pertama kali di repositori GitHub."]];
+const TERMS=G.map(([t,f,d])=>({t,d,re:new RegExp('(?<![\\w-])'+t.replace(/[.*+?^${}()|[\]\\-]/g,'\\$&')+'(?![\\w-])',f)}));
+const SK='svg,.fx,.fbar,.oh,.wb,table td:first-child,h1,h2,h3,nav,button,script,style,summary,.tm,.tag,.pri,.pill,.v,.l,.chip,.flow,th,#tip,.banner,.theme,.phase,.add,.tools b,b.t,code,.row,.res';
+function wrapT(n,seen){let b=null;for(const x of TERMS){if(seen.has(x.t))continue;const m=x.re.exec(n.data);if(m&&(!b||m.index<b.i||(m.index==b.i&&m[0].length>b.l)))b={x,i:m.index,l:m[0].length}}
+if(!b)return;seen.add(b.x.t);const r=n.splitText(b.i),a=r.splitText(b.l),s=document.createElement('span');s.className='tm';s.tabIndex=0;s.dataset.d=b.x.d;s.textContent=r.data;r.replaceWith(s);wrapT(a,seen)}
+function hl(root,seen){const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentElement.closest(SK)?3:1}),ns=[];while(w.nextNode())ns.push(w.currentNode);ns.forEach(n=>wrapT(n,seen))}
+const tip=document.createElement('div');tip.id='tip';tip.setAttribute('role','tooltip');document.body.appendChild(tip);
+function showT(e){tip.textContent=e.dataset.d;tip.style.display='block';const r=e.getBoundingClientRect(),w=tip.offsetWidth,h=tip.offsetHeight;tip.style.left=Math.max(8,Math.min(innerWidth-w-8,r.left))+'px';tip.style.top=(r.bottom+h+12>innerHeight?r.top-h-6:r.bottom+6)+'px'}
+document.addEventListener('click',ev=>{const t=ev.target.closest('.tm');t?showT(t):tip.style.display='none'});
+document.addEventListener('mouseover',ev=>{const t=ev.target.closest('.tm');if(t)showT(t)});
+document.addEventListener('mouseout',ev=>{if(ev.target.closest&&ev.target.closest('.tm'))tip.style.display='none'});
+document.addEventListener('focusin',ev=>{const t=ev.target.closest&&ev.target.closest('.tm');if(t)showT(t)});
+addEventListener('scroll',()=>tip.style.display='none',{passive:true});
+const qg=document.getElementById('qg'),qbar=document.querySelector('.fbar[aria-label="Filter pertanyaan"]');qbar.onclick=e=>{const b=e.target.closest('.fb');if(!b)return;const f=b.dataset.f;
+qbar.querySelectorAll('.fb').forEach(x=>x.classList.toggle('on',x==b));let th=null,vis=0;
+[...qg.children].forEach(el=>{if(el.classList.contains('theme')){if(th)th.hidden=!vis;th=el;vis=0}else{const show=f=='*'||el.dataset.p==f;el.hidden=!show;if(show)vis++}});if(th)th.hidden=!vis};
+let seen=new Set();[...document.querySelector('main').children].forEach(el=>{if(el.tagName=='H2')seen=new Set();hl(el,seen)});
+</script>
+</body></html>
