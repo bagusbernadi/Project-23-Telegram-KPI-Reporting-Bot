@@ -1,9 +1,9 @@
-"""Project 23: data produksi simulasi (skema Project 3) + log kedatangan data + log pengiriman bot. Seed tetap.
+"""Project 23: data produksi simulasi lini perakitan sepeda motor (skema tabel Project 3) + log kedatangan data + log pengiriman bot. Seed tetap.
 
 Hasil (data/sim/): production_daily.csv, defect_log.csv, data_arrival_log.csv, bot_delivery_log.csv,
 dim_defect.csv, dim_station.csv, ground_truth.json.
 Kejadian tertanam untuk menguji alert: 3 penurunan yield, data terlambat, data kosong.
-Jalankan: python scripts/generate_data.py   (versi data: v1)
+Jalankan: python scripts/generate_data.py   (versi data: v2)
 """
 import json
 from pathlib import Path
@@ -15,34 +15,37 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "data" / "sim"
 START_DATE = "2026-03-02"      # Senin
 N_DAYS = 75                    # hari kerja Senin-Jumat
-MODELS = ["Basic", "Plus", "Pro"]
+MODELS = ["Matic 110", "Bebek 125", "Sport 150"]
 SHIFTS = ["Shift 1", "Shift 2"]
-STATIONS = ["Solder Paste Printing", "Component Placement", "Reflow Soldering", "AOI Inspection",
-            "Board Test (ICT)", "Screen Assembly", "Housing Assembly", "Final Inspection",
-            "Functional Test", "Packaging"]
+STATIONS = ["Frame Welding", "Frame Painting", "Engine Assembly", "Wiring Harness Install",
+            "Wheel & Suspension", "Body Panel Assembly", "Electrical Test", "Final Inspection",
+            "Performance Test (Dyno)", "Packing"]
 # kode defect: (kode, nama, indeks stasiun, kategori, bobot di stasiun)
 DEFECTS = [
-    ("SPP-01", "Pasta solder kurang", 0, "Solder", 1.00),
-    ("CPL-01", "Missing component", 1, "Komponen", 0.60),
-    ("CPL-02", "Komponen terbalik", 1, "Komponen", 0.40),
-    ("RFL-01", "Solder bridge", 2, "Solder", 0.68),
-    ("RFL-02", "Cold solder", 2, "Solder", 0.32),
-    ("AOI-01", "Komponen bergeser", 3, "Komponen", 1.00),
-    ("ICT-01", "Short circuit", 4, "Elektrikal", 0.55),
-    ("ICT-02", "Open circuit", 4, "Elektrikal", 0.45),
-    ("SCR-01", "Layar retak", 5, "Layar", 0.50),
-    ("SCR-02", "Dead pixel", 5, "Layar", 0.50),
-    ("HSG-01", "Gores casing", 6, "Casing", 0.60),
-    ("HSG-02", "Celah casing", 6, "Casing", 0.40),
-    ("FIN-01", "Cacat kosmetik", 7, "Kosmetik", 1.00),
-    ("FCT-01", "Kamera gagal tes", 8, "Fungsi", 0.40),
-    ("FCT-02", "Sensor gagal tes", 8, "Fungsi", 0.35),
-    ("FCT-03", "Baterai gagal tes", 8, "Fungsi", 0.25),
-    ("PKG-01", "Label salah", 9, "Label", 1.00),
+    ("FWD-01", "Porositas las", 0, "Las", 0.55),
+    ("FWD-02", "Dimensi frame meleset", 0, "Las", 0.45),
+    ("PNT-01", "Cat tipis", 1, "Cat", 0.45),
+    ("PNT-02", "Cat berkulit jeruk", 1, "Cat", 0.35),
+    ("PNT-03", "Debu pada cat", 1, "Cat", 0.20),
+    ("ENG-01", "Torsi baut kurang", 2, "Mesin", 0.50),
+    ("ENG-02", "Rembes oli", 2, "Mesin", 0.50),
+    ("WRH-01", "Konektor tidak masuk penuh", 3, "Kelistrikan", 0.60),
+    ("WRH-02", "Kabel terjepit", 3, "Kelistrikan", 0.40),
+    ("WHL-01", "Velg oleng", 4, "Roda", 0.50),
+    ("WHL-02", "Suspensi bocor", 4, "Roda", 0.50),
+    ("BDY-01", "Gores panel body", 5, "Body", 0.55),
+    ("BDY-02", "Celah panel tidak rata", 5, "Body", 0.45),
+    ("ELT-01", "Lampu tidak menyala", 6, "Kelistrikan", 0.45),
+    ("ELT-02", "Starter gagal", 6, "Kelistrikan", 0.55),
+    ("FIN-01", "Cacat kosmetik", 7, "Kosmetik", 0.60),
+    ("FIN-02", "Stiker salah", 7, "Kosmetik", 0.40),
+    ("DYN-01", "Akselerasi di bawah spec", 8, "Performa", 0.50),
+    ("DYN-02", "Rem tidak sesuai tes", 8, "Performa", 0.50),
+    ("PKG-01", "Label atau kemasan rusak", 9, "Label", 1.00),
 ]
-BASE_NG = [0.012, 0.011, 0.040, 0.008, 0.013, 0.010, 0.015, 0.012, 0.020, 0.003]
-MODEL_FACTOR = {"Basic": 0.85, "Plus": 1.00, "Pro": 1.25}
-START_QTY = {"Basic": 460, "Plus": 420, "Pro": 360}
+BASE_NG = [0.014, 0.040, 0.013, 0.011, 0.012, 0.015, 0.018, 0.010, 0.016, 0.003]
+MODEL_FACTOR = {"Matic 110": 0.85, "Bebek 125": 1.00, "Sport 150": 1.25}
+START_QTY = {"Matic 110": 300, "Bebek 125": 240, "Sport 150": 150}
 OPERATOR = {(s, sh): f"OP{2 * s + j + 1:02d}" for s in range(len(STATIONS)) for j, sh in enumerate(SHIFTS)}
 DATES = pd.bdate_range(START_DATE, periods=N_DAYS)
 
@@ -85,7 +88,7 @@ def write_reference():
     pd.DataFrame({"station": STATIONS, "seq": range(1, len(STATIONS) + 1)}).to_csv(OUT / "dim_station.csv", index=False)
 
 SEED = 23260302
-DATA_VERSION = "v1"
+DATA_VERSION = "v2"
 rng = np.random.default_rng(SEED)
 
 # 3 kejadian penurunan yield: (stasiun, hari mulai, panjang hari, pengali peluang NG)

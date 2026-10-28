@@ -20,7 +20,7 @@ Bagaimana mengirim ringkasan KPI harian (yield, NG rate, rework rate per stasiun
 ## 2. Data
 Data produksi simulasi dibuat oleh `scripts/generate_data.py` (seed tetap). Perkiraan ±4.500 baris produksi harian. Tiga kejadian penurunan yield, data terlambat, dan data kosong sengaja ditanam untuk menguji alert. Pesan hanya dikirim ke grup demo.
 
-Versi data: v1. Tanggal dibuat: 28 Okt 2026. Seed: 23260302. Generator: `scripts/generate_data.py`. Hasil v1: 4.440 baris produksi, 6.584 baris defect.
+Versi data: v2. Tanggal dibuat: 28 Okt 2026. Seed: 23260302. Generator: `scripts/generate_data.py`. Hasil v2: 4.440 baris produksi, 6.250 baris defect.
 
 ## 3. Analysis
 Rencana: KPI harian per stasiun, Pareto defect, evaluasi ambang alert (precision dan recall), on-time delivery bot. Belum dikerjakan.
