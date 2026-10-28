@@ -1,0 +1,4 @@
+# data simulasi dibuat ulang oleh generator (seed tetap); jejaknya dicatat di repo DataCenter/simulasi
+data/*
+!data/README.md
+__pycache__/
