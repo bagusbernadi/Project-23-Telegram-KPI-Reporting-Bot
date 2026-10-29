@@ -1,7 +1,7 @@
 """Tahap 1 / langkah 01: bangkitkan data simulasi lini perakitan sepeda motor (v3). Seed tetap.
 
 Keluaran (data/raw/): production_daily.csv (sudah dikotori 2-3%), defect_log.csv, rework_log.csv,
-data_arrival_log.csv, runner_log.csv, dim_defect.csv, dim_station.csv, ground_truth.json,
+data_arrival_log.csv, runner_log.csv, dim_defect.csv, dim_station.csv, ground_truth.json (di data/),
 ground_truth_dirty.csv. Kejadian tertanam untuk menguji alert:
   - 3 penurunan yield (2 hari Engine Assembly, 1 hari Frame Painting, ±1 minggu turun perlahan di Performance Test),
   - 2 hari data tiba siang, 1 hari data kosong penuh,
@@ -176,7 +176,7 @@ def main():
           "defect_spike": {"date": str(DATES[SPIKE["day"]].date()), "defect_code": SPIKE["code"]},
           "runner_failed_days": [str(DATES[i].date()) for i in RUNNER_FAIL],
           "dirty_rows": int(len(dirty_truth)), "dirty_kinds": dirty_truth["kind"].value_counts().to_dict()}
-    (OUT / "ground_truth.json").write_text(json.dumps(gt, indent=2, ensure_ascii=False), encoding="utf-8")
+    (OUT.parent / "ground_truth.json").write_text(json.dumps(gt, indent=2, ensure_ascii=False), encoding="utf-8")
     print(f"production {len(prod)} baris (kotor {len(dirty_truth)}), defect {len(dlog)}, rework {len(rework)}, kedatangan {len(arrival)}")
 
 

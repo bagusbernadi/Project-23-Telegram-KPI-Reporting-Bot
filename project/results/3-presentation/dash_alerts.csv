@@ -1,0 +1,19 @@
+report_date,rule_id,scope,subject,value,baseline,true_event
+2026-03-30,R1,line,Lini,0.8611,0.8794,True
+2026-03-30,R2,station,Engine Assembly,0.96,0.9888,True
+2026-03-30,R3,defect,ENG-01,30.0,8.25,True
+2026-03-30,R3,defect,ENG-02,24.0,6.6,True
+2026-03-31,R3,defect,ENG-01,25.0,9.45,True
+2026-03-31,R3,defect,ENG-02,23.0,7.3,True
+2026-04-23,R3,defect,WRH-02,17.0,4.85,True
+2026-04-28,R3,defect,PNT-02,33.0,16.5,False
+2026-05-04,R1,line,Lini,0.8361,0.8778,True
+2026-05-04,R2,station,Frame Painting,0.9345,0.9661,True
+2026-05-04,R3,defect,PNT-01,38.0,19.75,True
+2026-05-04,R3,defect,PNT-02,39.0,18.4,True
+2026-06-02,R1,line,Lini,0.8523,0.8805,True
+2026-06-02,R3,defect,DYN-02,22.0,8.4,True
+2026-06-03,R2,station,Performance Test (Dyno),0.9622,0.9847,True
+2026-06-03,R3,defect,DYN-02,28.0,9.15,True
+2026-06-04,R3,defect,DYN-01,24.0,9.9,True
+2026-06-04,R3,defect,DYN-02,24.0,10.1,True

@@ -1,13 +1,16 @@
 date,defect_name,station,qty,rnk
-2026-05-04,Cat berkulit jeruk,Frame Painting,39.0,1
-2026-05-04,Cat tipis,Frame Painting,38.0,2
-2026-05-04,Debu pada cat,Frame Painting,14.0,3
-2026-03-30,Torsi baut kurang,Engine Assembly,30.0,1
-2026-03-30,Rembes oli,Engine Assembly,24.0,2
-2026-03-30,Cat berkulit jeruk,Frame Painting,17.0,3
 2026-03-27,Cat tipis,Frame Painting,22.0,1
 2026-03-27,Cat berkulit jeruk,Frame Painting,19.0,2
 2026-03-27,Celah panel tidak rata,Body Panel Assembly,14.0,3
+2026-03-30,Torsi baut kurang,Engine Assembly,30.0,1
+2026-03-30,Rembes oli,Engine Assembly,24.0,2
+2026-03-30,Cat berkulit jeruk,Frame Painting,17.0,3
+2026-05-04,Cat berkulit jeruk,Frame Painting,39.0,1
+2026-05-04,Cat tipis,Frame Painting,38.0,2
+2026-05-04,Debu pada cat,Frame Painting,14.0,3
 2026-06-02,Cat tipis,Frame Painting,32.0,1
 2026-06-02,Rem tidak sesuai tes,Performance Test (Dyno),22.0,2
 2026-06-02,Starter gagal,Electrical Test,18.0,3
+2026-06-12,Cat berkulit jeruk,Frame Painting,20.0,1
+2026-06-12,Cat tipis,Frame Painting,16.0,2
+2026-06-12,Rem tidak sesuai tes,Performance Test (Dyno),13.0,3

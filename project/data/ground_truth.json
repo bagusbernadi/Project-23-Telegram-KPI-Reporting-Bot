@@ -1,0 +1,60 @@
+{
+  "seed": 23260302,
+  "version": "v3",
+  "start_date": "2026-03-02",
+  "n_days": 75,
+  "yield_drops": [
+    {
+      "station": "Engine Assembly",
+      "start": "2026-03-30",
+      "end": "2026-03-31",
+      "peak_factor": 3.4,
+      "gradual": false
+    },
+    {
+      "station": "Frame Painting",
+      "start": "2026-05-04",
+      "end": "2026-05-04",
+      "peak_factor": 3.0,
+      "gradual": false
+    },
+    {
+      "station": "Performance Test (Dyno)",
+      "start": "2026-05-27",
+      "end": "2026-06-04",
+      "peak_factor": 2.6,
+      "gradual": true
+    }
+  ],
+  "late_data": [
+    {
+      "date": "2026-03-23",
+      "note": "data tiba 12:00-13:30"
+    },
+    {
+      "date": "2026-05-12",
+      "note": "data tiba 12:00-13:30"
+    }
+  ],
+  "empty_data": [
+    {
+      "date": "2026-04-16",
+      "note": "tidak ada baris dua shift"
+    }
+  ],
+  "defect_spike": {
+    "date": "2026-04-23",
+    "defect_code": "WRH-02"
+  },
+  "runner_failed_days": [
+    "2026-04-01",
+    "2026-05-06",
+    "2026-06-02"
+  ],
+  "dirty_rows": 111,
+  "dirty_kinds": {
+    "ng_negatif": 37,
+    "ok_ng_melebihi_input": 37,
+    "duplikat": 37
+  }
+}

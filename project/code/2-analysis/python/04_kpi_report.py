@@ -29,20 +29,20 @@ def main():
               FROM v_kpi_station_daily GROUP BY 1,2 ORDER BY seq""")
     sp["rank_worst_fpy"] = sp["fpy"].rank().astype(int)
     sp.to_csv(RES_ANALYSIS / "kpi_station_period.csv", index=False)
-    par = q("""SELECT defect_code, defect_name, station, SUM(qty) AS qty FROM v_defect_daily GROUP BY 1,2,3 ORDER BY qty DESC""")
+    par = q("""SELECT defect_code, defect_name, station, SUM(qty) AS qty FROM v_defect_daily GROUP BY 1,2,3 ORDER BY qty DESC, defect_code""")
     par["share"] = (par["qty"] / par["qty"].sum()).round(4)
     par["cum_share"] = par["share"].cumsum().round(4)
     par.to_csv(RES_ANALYSIS / "pareto_period.csv", index=False)
     dates = line["date"].tolist()
     last7 = dates[-7:]
     inlist = ",".join(f"'{d}'" for d in last7)
-    q(f"SELECT defect_code, defect_name, station, SUM(qty) AS qty FROM v_defect_daily WHERE strftime(date,'%Y-%m-%d') IN ({inlist}) GROUP BY 1,2,3 ORDER BY qty DESC LIMIT 10"
+    q(f"SELECT defect_code, defect_name, station, SUM(qty) AS qty FROM v_defect_daily WHERE strftime(date,'%Y-%m-%d') IN ({inlist}) GROUP BY 1,2,3 ORDER BY qty DESC, defect_code LIMIT 10"
       ).to_csv(RES_ANALYSIS / "pareto_latest_7d.csv", index=False)
-    samp = ["2026-03-27", "2026-03-30", "2026-05-04", "2026-06-02"]
+    samp = ["2026-03-27", "2026-03-30", "2026-05-04", "2026-06-02", dates[-1]]
     inl = ",".join(f"'{d}'" for d in samp)
     q(f"""SELECT strftime(date,'%Y-%m-%d') AS date, defect_name, station, SUM(qty) AS qty,
-                 ROW_NUMBER() OVER (PARTITION BY date ORDER BY SUM(qty) DESC, defect_name) AS rnk
-          FROM v_defect_daily WHERE strftime(date,'%Y-%m-%d') IN ({inl}) GROUP BY date, defect_name, station""").query("rnk <= 3").to_csv(RES_ANALYSIS / "pareto_by_day_sample.csv", index=False)
+                 ROW_NUMBER() OVER (PARTITION BY date ORDER BY SUM(qty) DESC, defect_name, station) AS rnk
+          FROM v_defect_daily WHERE strftime(date,'%Y-%m-%d') IN ({inl}) GROUP BY date, defect_name, station""").query("rnk <= 3").sort_values(["date", "rnk"]).to_csv(RES_ANALYSIS / "pareto_by_day_sample.csv", index=False)
     rows = []
     for i in range(14, len(dates)):
         cur, prev = dates[i - 6:i + 1], dates[i - 13:i - 6]

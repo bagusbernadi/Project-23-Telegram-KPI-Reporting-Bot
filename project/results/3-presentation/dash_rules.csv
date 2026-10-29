@@ -1,0 +1,6 @@
+rule_id,kpi,scope,method,threshold,window_days,min_count,active,note
+R1,line_yield,line,rolling_sigma,2.0,20,0,True,Yield lini hari ini < rata-rata 20 hari kerja sebelumnya - 2 simpangan baku
+R2,station_fpy,station,rolling_sigma,3.5,20,0,True,"Yield satu stasiun < rata-rata 20 hari stasiun itu - 3,5 simpangan baku"
+R3,defect_qty,defect,poisson,4.0,20,5,True,Jumlah satu kode defect > rata-rata 20 hari + 4 x akar(rata-rata) dan minimal 5 unit
+R4,line_yield,line,fixed,0.865,0,0,False,"Ambang tetap 86,5%: dibandingkan, ditolak (5 alert palsu dari 54 hari)"
+R5,defect_qty,defect,pct,0.5,7,5,False,"Naik > 50% dari rata-rata 7 hari: dibandingkan, ditolak (124 alert palsu dari 143 alert pada jendela 20 hari)"
