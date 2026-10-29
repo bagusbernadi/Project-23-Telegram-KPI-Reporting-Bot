@@ -4,7 +4,7 @@
 
 **Status: Selesai di branch `project-23-build` (menunggu review sebelum digabung ke `main`).**
 
-Halaman rancangan dan Report: https://bagusbernadi.github.io/project-23-telegram-kpi-reporting-bot/
+Halaman rancangan dan Report: https://bagusbernadi.github.io/Project-23-Telegram-KPI-Reporting-Bot/
 
 | | |
 |---|---|
