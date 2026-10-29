@@ -1,0 +1,4 @@
+kind,ground_truth,detected,true_positive,false_positive,missed,precision,recall
+duplikat,37,37,37,0,0,1.0,1.0
+ng_negatif,37,37,37,0,0,1.0,1.0
+ok_ng_melebihi_input,37,37,37,0,0,1.0,1.0

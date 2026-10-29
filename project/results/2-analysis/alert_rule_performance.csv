@@ -1,0 +1,4 @@
+rule_id,alerts,true_alerts,false_alerts,precision,events_caught,events_total,false_dates
+R1,3,3,0,1.0,3,3,
+R2,3,3,0,1.0,3,3,
+R3,12,11,1,0.917,4,4,2026-04-28

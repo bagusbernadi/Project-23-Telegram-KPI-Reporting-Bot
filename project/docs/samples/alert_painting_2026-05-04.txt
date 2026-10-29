@@ -1,0 +1,19 @@
+[daily] 2026-05-05 07:04:00
+Laporan 4 Mei 2026
+Yield lini 83,6% (−4,2 pp vs 7 hari sebelumnya) · Unit OK 1173 dari 1403
+Rework lini 10,2% · NG total 230 unit
+Yield terendah: Frame Painting 93,5%
+Turun paling jauh vs rata-rata 20 hari: Frame Painting −3,1 pp
+Top NG hari ini: Cat berkulit jeruk (39), Cat tipis (38), Debu pada cat (14)
+Top NG 7 hari: Cat berkulit jeruk (180), Cat tipis (168), Debu pada cat (72)
+Ada alert, lihat pesan berikutnya.
+
+---
+
+[alert] 2026-05-05 07:04:00
+ALERT 4 Mei 2026
+[R1] Yield lini 83,6% di bawah batas (−4,2 pp vs rata-rata 20 hari 87,8%)
+[R2] Frame Painting: yield 93,5%, turun 3,2 pp dari rata-rata 20 hari
+[R3] Lonjakan Cat tipis (PNT-01): 38 unit vs rata-rata 20 hari 19,8
+[R3] Lonjakan Cat berkulit jeruk (PNT-02): 39 unit vs rata-rata 20 hari 18,4
+Alert menunjukkan kapan, bukan kenapa. Cek lapangan.

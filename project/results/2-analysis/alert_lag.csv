@@ -1,0 +1,4 @@
+station,event_start,event_days,first_alert_for,days_to_detect,alert_sent_at,hours_after_shift_end,hours_earlier_than_manual
+Engine Assembly,2026-03-30,2,2026-03-30,0,2026-03-31 07:01:00,8.0,5.0
+Frame Painting,2026-05-04,1,2026-05-04,0,2026-05-05 07:04:00,8.1,4.9
+Performance Test (Dyno),2026-05-27,7,2026-06-02,4,2026-06-03 08:00:00,9.0,4.0

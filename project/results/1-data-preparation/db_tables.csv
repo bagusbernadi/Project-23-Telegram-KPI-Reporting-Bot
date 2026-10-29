@@ -1,0 +1,15 @@
+object,rows
+production_daily,4440
+defect_log,6222
+rework_log,5244
+dim_defect,20
+dim_station,10
+data_arrival_log,148
+runner_log,75
+alert_rule,5
+delivery_log,0
+v_station_daily,740
+v_line_daily,74
+v_defect_daily,1474
+v_rework_station_daily,728
+v_kpi_station_daily,740

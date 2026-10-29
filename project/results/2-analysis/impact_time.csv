@@ -1,0 +1,8 @@
+item,value,label
+waktu otomatis per laporan (detik),0.49,"diukur: median dari 54 laporan, laptop/container ini"
+waktu otomatis maks (detik),0.64,diukur
+waktu manual per laporan (menit),30.0,ESTIMASI: unduh dan rapikan data 8; hitung yield/NG/rework di Excel 10; buat grafik 5; periksa angka 4; tulis dan kirim pesan 3
+waktu baca pesan bot (menit),2.0,ESTIMASI
+menit dihemat per laporan,28.0,estimasi
+hari kerja per tahun,245.0,asumsi
+jam kerja dihemat per tahun,114.3,estimasi

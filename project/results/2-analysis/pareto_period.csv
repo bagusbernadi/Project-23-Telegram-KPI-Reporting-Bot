@@ -1,0 +1,21 @@
+defect_code,defect_name,station,qty,share,cum_share
+PNT-01,Cat tipis,Frame Painting,1555.0,0.1241,0.1241
+PNT-02,Cat berkulit jeruk,Frame Painting,1285.0,0.1026,0.2267
+ELT-02,Starter gagal,Electrical Test,780.0,0.0623,0.289
+DYN-01,Akselerasi di bawah spec,Performance Test (Dyno),700.0,0.0559,0.3449
+BDY-01,Gores panel body,Body Panel Assembly,655.0,0.0523,0.3972
+FWD-01,Porositas las,Frame Welding,644.0,0.0514,0.4486
+DYN-02,Rem tidak sesuai tes,Performance Test (Dyno),638.0,0.0509,0.4995
+PNT-03,Debu pada cat,Frame Painting,618.0,0.0493,0.5488
+ELT-01,Lampu tidak menyala,Electrical Test,603.0,0.0481,0.5969
+ENG-01,Torsi baut kurang,Engine Assembly,591.0,0.0472,0.6441
+FWD-02,Dimensi frame meleset,Frame Welding,570.0,0.0455,0.6896
+ENG-02,Rembes oli,Engine Assembly,549.0,0.0438,0.7334
+BDY-02,Celah panel tidak rata,Body Panel Assembly,534.0,0.0426,0.776
+WRH-01,Konektor tidak masuk penuh,Wiring Harness Install,532.0,0.0425,0.8185
+WHL-02,Suspensi bocor,Wheel & Suspension,480.0,0.0383,0.8568
+FIN-01,Cacat kosmetik,Final Inspection,453.0,0.0362,0.893
+WHL-01,Velg oleng,Wheel & Suspension,451.0,0.036,0.929
+WRH-02,Kabel terjepit,Wiring Harness Install,328.0,0.0262,0.9552
+FIN-02,Stiker salah,Final Inspection,307.0,0.0245,0.9797
+PKG-01,Label atau kemasan rusak,Packing,253.0,0.0202,0.9999

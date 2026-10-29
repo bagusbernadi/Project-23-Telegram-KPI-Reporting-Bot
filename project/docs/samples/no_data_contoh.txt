@@ -1,0 +1,17 @@
+[no_data] 2026-03-24 07:02:00 (tanggal 2026-03-23)
+Data 23 Mar 2026 belum masuk. Laporan dikirim otomatis begitu data tiba (dicek tiap jam).
+
+---
+
+[no_data] 2026-04-17 07:04:00 (tanggal 2026-04-16)
+Data 16 Apr 2026 belum masuk. Laporan dikirim otomatis begitu data tiba (dicek tiap jam).
+
+---
+
+[no_data] 2026-04-17 14:00:00 (tanggal 2026-04-16)
+Data 16 Apr 2026 tidak tiba sampai 14:00. Laporan hari ini tidak dibuat; cek sumber data.
+
+---
+
+[no_data] 2026-05-13 07:06:00 (tanggal 2026-05-12)
+Data 12 Mei 2026 belum masuk. Laporan dikirim otomatis begitu data tiba (dicek tiap jam).

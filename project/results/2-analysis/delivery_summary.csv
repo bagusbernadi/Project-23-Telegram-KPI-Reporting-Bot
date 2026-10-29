@@ -1,0 +1,15 @@
+metric,value
+hari kerja dilaporkan,75.0
+pesan daily terkirim,74.0
+pesan alert terkirim,8.0
+pesan no_data terkirim,4.0
+pengiriman gagal (run Actions),3.0
+"hari dengan data tiba, laporan terkirim <= 07:15",69.0
+hari dengan data tiba,74.0
+on-time rate ujung ke ujung (hari dengan data tiba),93.2
+hari dengan data sudah ada saat run 07:00,72.0
+laporan tepat waktu di antara hari tsb,69.0
+on-time delivery rate bot (data sudah ada),95.8
+on-time rate semua hari kerja (termasuk data hilang),92.0
+median latency_s,4.0
+hari tanpa laporan harian,1.0

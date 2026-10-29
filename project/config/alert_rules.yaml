@@ -1,0 +1,23 @@
+# Aturan alert dan perilaku saat data hilang. Dibaca oleh 03_build_db.py (tabel alert_rule) dan bot.
+# Parameter aktif dipilih dari evaluasi 05_alert_eval.py (hasil: results/2-analysis/alert_eval_*.csv).
+# Kolom threshold berarti: k simpangan baku (rolling_sigma/sigma), ambang proporsi (fixed), atau kenaikan proporsi (pct).
+rules:
+  - {rule_id: R1, kpi: line_yield, scope: line, method: rolling_sigma, threshold: 2.0, window_days: 20, min_count: 0, active: true,
+     note: "Yield lini hari ini < rata-rata 20 hari kerja sebelumnya - 2 simpangan baku"}
+  - {rule_id: R2, kpi: station_fpy, scope: station, method: rolling_sigma, threshold: 3.5, window_days: 20, min_count: 0, active: true,
+     note: "Yield satu stasiun < rata-rata 20 hari stasiun itu - 3,5 simpangan baku"}
+  - {rule_id: R3, kpi: defect_qty, scope: defect, method: poisson, threshold: 4.0, window_days: 20, min_count: 5, active: true,
+     note: "Jumlah satu kode defect > rata-rata 20 hari + 4 x akar(rata-rata) dan minimal 5 unit"}
+  - {rule_id: R4, kpi: line_yield, scope: line, method: fixed, threshold: 0.865, window_days: 0, min_count: 0, active: false,
+     note: "Ambang tetap 86,5%: dibandingkan, ditolak (5 alert palsu dari 54 hari)"}
+  - {rule_id: R5, kpi: defect_qty, scope: defect, method: pct, threshold: 0.5, window_days: 7, min_count: 5, active: false,
+     note: "Naik > 50% dari rata-rata 7 hari: dibandingkan, ditolak (124 alert palsu dari 143 alert pada jendela 20 hari)"}
+missing_data:
+  run_time: "07:00"            # jadwal cron utama (WIB)
+  retry_cron_utc: "0 1-7 * * 1-5"  # cek ulang tiap jam 08:00-14:00 WIB (mengulang run gagal dan menunggu data terlambat)
+
+  give_up_at: "14:00"          # lewat jam ini tanpa data: kirim pesan 'data tidak ada'
+  on_time_limit: "07:15"       # asumsi batas tepat waktu
+telegram:
+  send_retries: 3
+  retry_wait_seconds: [2, 5, 10]

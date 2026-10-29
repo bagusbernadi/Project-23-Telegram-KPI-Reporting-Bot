@@ -1,0 +1,7 @@
+[daily] 2026-03-30 07:09:00
+Laporan 27 Mar 2026
+Yield lini 88,1% (+0,4 pp vs 7 hari sebelumnya) · Unit OK 1239 dari 1407
+Rework lini 8,3% · NG total 168 unit
+Yield terendah: Frame Painting 96,2%
+Top NG hari ini: Cat tipis (22), Cat berkulit jeruk (19), Celah panel tidak rata (14)
+Top NG 7 hari: Cat tipis (150), Cat berkulit jeruk (130), Gores panel body (78)

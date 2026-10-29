@@ -1,0 +1,13 @@
+check,value,note
+baris mentah,4477.0,
+baris ganda dibuang,37.0,kunci date-shift-station-model
+semua ganda identik,1.0,1 = ya
+ng negatif dipulihkan,37.0,ng = input - ok
+ok+ng melebihi input dipulihkan,37.0,ok = input - ng
+baris bersih,4440.0,
+persen baris kotor dari mentah,2.48,target 2-3%
+ng_qty == jumlah defect_log,1.0,"1 = ya, semua baris"
+input stasiun berikut == ok stasiun sebelumnya,1.0,1 = ya
+rework date_out >= date_in,1.0,1 = ya
+ok + ng == input,1.0,1 = ya
+tidak ada nilai negatif,1.0,1 = ya

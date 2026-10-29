@@ -1,0 +1,13 @@
+date,bot_line,sql_line,excel_line,line_pass,bot_worst,sql_worst,excel_worst,worst_pass,bot_top,sql_top,excel_top_qty,top_pass
+2026-03-23,0.86,0.859944,0.859944,True,0.963,0.963173,0.963173,True,Cat tipis (25),Cat tipis (25),25,True
+2026-03-30,0.861,0.861131,0.861131,True,0.96,0.96,0.96,True,Torsi baut kurang (30),Torsi baut kurang (30),30,True
+2026-03-31,0.86,0.860104,0.860104,True,0.963,0.963105,0.963105,True,Torsi baut kurang (25),Torsi baut kurang (25),25,True
+2026-04-06,0.882,0.881541,0.881541,True,0.965,0.964758,0.964758,True,Cat berkulit jeruk (24),Cat berkulit jeruk (24),24,True
+2026-04-07,0.877,0.877246,0.877246,True,0.97,0.970455,0.970455,True,Cat berkulit jeruk (19),Cat berkulit jeruk (19),19,True
+2026-04-20,0.86,0.860299,0.860299,True,0.97,0.970311,0.970311,True,Cat berkulit jeruk (17),Cat berkulit jeruk (17),17,True
+2026-04-22,0.894,0.894437,0.894437,True,0.976,0.976276,0.976276,True,Cat tipis (14),Cat tipis (14),14,True
+2026-04-23,0.882,0.882099,0.882099,True,0.9620000000000001,0.962182,0.962182,True,Cat berkulit jeruk (25),Cat berkulit jeruk (25),25,True
+2026-04-27,0.888,0.887784,0.887784,True,0.9620000000000001,0.961843,0.961843,True,Cat berkulit jeruk (22),Cat berkulit jeruk (22),22,True
+2026-04-29,0.88,0.8795,0.8795,True,0.961,0.960682,0.960682,True,Cat berkulit jeruk (24),Cat berkulit jeruk (24),24,True
+2026-05-04,0.836,0.836066,0.836066,True,0.935,0.934532,0.934532,True,Cat berkulit jeruk (39),Cat berkulit jeruk (39),39,True
+2026-06-02,0.852,0.852314,0.852314,True,0.9640000000000001,0.964312,0.964312,True,Cat tipis (32),Cat tipis (32),32,True

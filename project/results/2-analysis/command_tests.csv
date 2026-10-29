@@ -1,0 +1,10 @@
+command,as_of,check,result,reply_first_line
+/yield,2026-04-10,"yield lini sama dengan view SQL, 10 stasiun tampil",lulus,Yield 10 Apr 2026
+/top_ng,2026-04-10,ada top NG hari ini dan 7 hari,lulus,Top NG 10 Apr 2026
+/trend 7d,2026-04-10,7 baris tanggal,lulus,Tren yield lini 7 hari
+/trend 30d,2026-04-10,30 hari,lulus,Tren yield lini 30 hari
+/trend 99d,2026-04-10,ditolak (di luar 2-60 hari),lulus,Format: /trend 7d (2 sampai 60 hari)
+/trend abc,2026-04-10,argumen salah ditolak,lulus,Format: /trend 7d (2 sampai 60 hari)
+/help,2026-04-10,daftar perintah,lulus,Perintah:
+/yield@kpi_bot,2026-04-10,perintah dengan nama bot,lulus,Yield 10 Apr 2026
+/hapus,2026-04-10,perintah asing,lulus,Perintah tidak dikenal.

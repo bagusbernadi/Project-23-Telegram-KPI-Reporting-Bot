@@ -1,0 +1,17 @@
+[daily] 2026-06-03 08:00:00
+Laporan 2 Jun 2026
+Yield lini 85,2% (−2,6 pp vs 7 hari sebelumnya) · Unit OK 1160 dari 1361
+Rework lini 9,1% · NG total 201 unit
+Yield terendah: Frame Painting 96,4%
+Turun paling jauh vs rata-rata 20 hari: Performance Test (Dyno) −1,5 pp
+Top NG hari ini: Cat tipis (32), Rem tidak sesuai tes (22), Starter gagal (18)
+Top NG 7 hari: Cat tipis (165), Cat berkulit jeruk (114), Starter gagal (82)
+Ada alert, lihat pesan berikutnya.
+
+---
+
+[alert] 2026-06-03 08:00:00
+ALERT 2 Jun 2026
+[R1] Yield lini 85,2% di bawah batas (−2,8 pp vs rata-rata 20 hari 88,1%)
+[R3] Lonjakan Rem tidak sesuai tes (DYN-02): 22 unit vs rata-rata 20 hari 8,4
+Alert menunjukkan kapan, bukan kenapa. Cek lapangan.

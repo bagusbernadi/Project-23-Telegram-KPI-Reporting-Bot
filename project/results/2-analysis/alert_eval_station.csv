@@ -1,0 +1,10 @@
+rule,param,alert_days,tp_days,fp_days,events_caught,precision_day,fp_dates
+station_fixed,0.93,0,0,0,0,0.0,
+station_fixed,0.95,2,1,1,1,0.5,Frame Painting@2026-04-28
+station_fixed,0.96,9,1,8,1,0.111,"Frame Painting@2026-04-08,Frame Painting@2026-04-28,Frame Painting@2026-05-01,Frame Painting@2026-05-15,Frame Painting@2026-05-25,Frame Painting@2026-05-27,Frame Painting@2026-05-29,Frame Painting@2026-06-09"
+station_rolling_sigma,2.0,29,8,21,3,0.276,"Body Panel Assembly@2026-04-15,Body Panel Assembly@2026-05-04,Body Panel Assembly@2026-05-20,Electrical Test@2026-04-13,Electrical Test@2026-05-08,Engine Assembly@2026-05-07,Engine Assembly@2026-05-20,Final Inspection@2026-04-27,Final Inspection@2026-06-10,Final Inspection@2026-06-12,Frame Painting@2026-04-08,Frame Painting@2026-04-28,Frame Welding@2026-04-15,Frame Welding@2026-05-28,Packing@2026-04-07,Packing@2026-04-13,Packing@2026-05-07,Performance Test (Dyno)@2026-04-14,Wheel & Suspension@2026-04-01,Wheel & Suspension@2026-06-02,Wiring Harness Install@2026-05-28"
+station_rolling_sigma,2.5,14,6,8,3,0.429,"Final Inspection@2026-06-10,Final Inspection@2026-06-12,Frame Painting@2026-04-08,Frame Painting@2026-04-28,Frame Welding@2026-05-28,Packing@2026-04-13,Packing@2026-05-07,Wheel & Suspension@2026-06-02"
+station_rolling_sigma,3.0,9,4,5,3,0.444,"Final Inspection@2026-06-12,Frame Painting@2026-04-08,Frame Painting@2026-04-28,Frame Welding@2026-05-28,Wheel & Suspension@2026-06-02"
+station_rolling_sigma,3.5,3,3,0,3,1.0,
+station_rolling_sigma,4.0,2,2,0,2,1.0,
+station_rolling_sigma,5.0,1,1,0,1,1.0,

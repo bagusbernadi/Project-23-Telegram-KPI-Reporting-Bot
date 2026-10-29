@@ -1,0 +1,15 @@
+rule,param,alert_days,tp_days,fp_days,events_caught,precision_day,fp_dates
+line_fixed,0.8,0,0,0,0,,
+line_fixed,0.82,0,0,0,0,,
+line_fixed,0.84,1,1,0,1,1.0,
+line_fixed,0.85,1,1,0,1,1.0,
+line_fixed,0.86,4,3,1,2,0.75,2026-05-08
+line_fixed,0.855,2,2,0,2,1.0,
+line_fixed,0.865,10,5,5,3,0.5,"2026-04-20,2026-04-28,2026-05-01,2026-05-08,2026-06-09"
+line_fixed,0.87,15,8,7,3,0.533,"2026-04-08,2026-04-13,2026-04-20,2026-04-28,2026-05-01,2026-05-08,2026-06-09"
+line_rolling_sigma,1.5,9,5,4,3,0.556,"2026-04-20,2026-04-28,2026-05-01,2026-05-08"
+line_rolling_sigma,2.0,3,3,0,3,1.0,
+line_rolling_sigma,2.5,2,2,0,2,1.0,
+line_rolling_sigma,3.0,1,1,0,1,1.0,
+line_rolling_sigma,3.5,1,1,0,1,1.0,
+line_rolling_sigma,4.0,1,1,0,1,1.0,

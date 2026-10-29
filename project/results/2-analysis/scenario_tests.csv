@@ -1,0 +1,9 @@
+scenario,expected,observed,result
+S1 hari normal,"1 pesan daily dengan foto, tanpa alert",['daily'],lulus
+S2 hari penurunan yield,daily + alert,"['daily', 'alert']",lulus
+S3 data terlambat (tiba siang),"no_data jam 07:05, lalu daily setelah data tiba, tanpa pesan give-up","[('no_data', '07:05'), ('daily', '14:00')]",lulus
+S4 data kosong sepanjang hari,"no_data 07:05 dan no_data final 14:00, tidak ada daily, berhenti setelah give-up","['no_data', 'no_data']",lulus
+S5 run ulang pada hari yang sama,tetap 1 pesan daily,1 pesan,lulus
+S6 Telegram error 2x lalu berhasil (transport palsu),"3 percobaan, jeda 2 s lalu 5 s, status sent, token tidak bocor di log","3 percobaan, jeda [2, 5], ok=True",lulus
+S7 Telegram selalu error (transport palsu),"gagal tercatat sebagai failed, token disamarkan, tidak crash","ok=False, status=failed, error='HTTP 500 https://api.telegram.org/bot***/sendMessage'",lulus
+S8 token tidak diset,melempar SendError yang jelas,TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID belum diisi,lulus

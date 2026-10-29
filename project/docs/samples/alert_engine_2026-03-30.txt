@@ -1,0 +1,19 @@
+[daily] 2026-03-31 07:01:00
+Laporan 30 Mar 2026
+Yield lini 86,1% (−1,5 pp vs 7 hari sebelumnya) · Unit OK 1203 dari 1397
+Rework lini 8,4% · NG total 194 unit
+Yield terendah: Engine Assembly 96,0%
+Turun paling jauh vs rata-rata 20 hari: Engine Assembly −2,9 pp
+Top NG hari ini: Torsi baut kurang (30), Rembes oli (24), Cat berkulit jeruk (17)
+Top NG 7 hari: Cat tipis (150), Cat berkulit jeruk (133), Starter gagal (73)
+Ada alert, lihat pesan berikutnya.
+
+---
+
+[alert] 2026-03-31 07:01:00
+ALERT 30 Mar 2026
+[R1] Yield lini 86,1% di bawah batas (−1,8 pp vs rata-rata 20 hari 87,9%)
+[R2] Engine Assembly: yield 96,0%, turun 2,9 pp dari rata-rata 20 hari
+[R3] Lonjakan Torsi baut kurang (ENG-01): 30 unit vs rata-rata 20 hari 8,2
+[R3] Lonjakan Rembes oli (ENG-02): 24 unit vs rata-rata 20 hari 6,6
+Alert menunjukkan kapan, bukan kenapa. Cek lapangan.

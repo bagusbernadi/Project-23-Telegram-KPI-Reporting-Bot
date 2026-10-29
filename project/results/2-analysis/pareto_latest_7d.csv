@@ -1,0 +1,11 @@
+defect_code,defect_name,station,qty
+PNT-01,Cat tipis,Frame Painting,143.0
+PNT-02,Cat berkulit jeruk,Frame Painting,137.0
+DYN-01,Akselerasi di bawah spec,Performance Test (Dyno),83.0
+DYN-02,Rem tidak sesuai tes,Performance Test (Dyno),73.0
+ELT-02,Starter gagal,Electrical Test,72.0
+BDY-01,Gores panel body,Body Panel Assembly,61.0
+ELT-01,Lampu tidak menyala,Electrical Test,59.0
+FWD-01,Porositas las,Frame Welding,56.0
+FIN-01,Cacat kosmetik,Final Inspection,55.0
+FWD-02,Dimensi frame meleset,Frame Welding,54.0
